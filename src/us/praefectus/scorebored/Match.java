@@ -121,7 +121,7 @@ public class Match {
     }
     
     public void advanceTeam(Team.Side side) {
-        List<String> commentary = new ArrayList<String>();
+        Commentary commentary = new Commentary();
         
         if ( isEndOfMatch() ) { 
             return;
@@ -169,7 +169,7 @@ public class Match {
 
                 if ( isServerChange() ) {
                     if(!isOvertime()) {
-                        commentary.add("Change servers!");
+                        commentary.add("Change servers", "Change servers!");
                     }
                     switchServers();
                     String name = getTeam(server).getName();
@@ -182,7 +182,7 @@ public class Match {
                 }
                 else {
                     if(leftTeam.getScore() == rightTeam.getScore()) {
-                        commentary.add("Deuce!");
+                        commentary.add("Deuce", "Deuce!");
                     }
                 }
 
@@ -193,17 +193,17 @@ public class Match {
         talker.say(commentary);
     }
 
-    public List<String> checkForOfer(Team team, List<String> commentary) {
+    public Commentary checkForOfer(Team team, Commentary commentary) {
         if(pastPointTracker.equals(team.getName())) {
             oferCounter ++;
             if (gameLength == GameLength.TWENTY_ONE) {
                 if (oferCounter == 5) {
-                    commentary.add("O-fer!");
+                    commentary.add("O-fer!", "Oh fer!");
                 }
             }
             if (gameLength == GameLength.ELEVEN) {
                 if(oferCounter == 2) {
-                    commentary.add("O-fer!");
+                    commentary.add("O-fer!", "Oh fer!");
                 }
             }
         }
@@ -215,7 +215,7 @@ public class Match {
 
     }
 
-    public List<String> checkForGamePoint(List<String> commentary) {    
+    public Commentary checkForGamePoint(Commentary commentary) {    
         if(leftTeam.getScore() >= 20 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
             if(isOvertime()) {
                 commentary.add("Advantage " + leftTeam.getName());

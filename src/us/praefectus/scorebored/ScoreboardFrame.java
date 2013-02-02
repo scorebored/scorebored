@@ -8,11 +8,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import us.praefectus.scorebored.swing.Swing;
 import us.praefectus.scorebored.swing.TextRenderer;
 import us.praefectus.scorebored.swing.WindowManager;
+import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.talker.SwingTalker;
 import us.praefectus.scorebored.talker.TalkListener;
 import us.praefectus.scorebored.util.Strings;
@@ -63,9 +63,9 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         
         talker.addListener(new TalkListener() {
             @Override
-            public void talkStarted(String text) {
+            public void talkStarted(Speech speech) {
                 if ( talker.isMute() || match.isSubtitled() ) { 
-                    subtitle.setText(text);
+                    subtitle.setText(speech.getDisplayAs());
                     repaint();
                 }
             }

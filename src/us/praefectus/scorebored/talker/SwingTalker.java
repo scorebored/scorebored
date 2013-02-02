@@ -93,14 +93,22 @@ public class SwingTalker implements Talker {
     }
     
     @Override
-    public void say(String... sentences) { 
+    public void say(Commentary commentary) {
         silence();
-        worker = new Worker(sentences);
+        worker = new Worker(commentary);
         worker.execute();
     }
     
-    public void say(List<String> sentences) {
-       say(sentences.toArray(new String[] {}));
+    @Override
+    public void say(String... sentences) {
+        say(Commentary.fromArray(sentences));
+    }
+    
+    @Override
+    public void say(String sentence) {
+        Commentary commentary = new Commentary();
+        commentary.add(sentence);
+        say(commentary);
     }
     
     public void addListener(TalkListener listener) { 
@@ -126,13 +134,13 @@ public class SwingTalker implements Talker {
         talker.setMuteWaitTime(waitTime);
     }
     
-    class Worker extends SwingWorker<Object,String> {
+    class Worker extends SwingWorker<Object,Speech> {
 
-        private String[] sentences;
+        private Commentary commentary;
         private Exception exception = null;
 
-        public Worker(String... sentences) { 
-            this.sentences = Check.notNull(sentences);
+        public Worker(Commentary commentary) { 
+            this.commentary = Check.notNull(commentary);
         }
 
         public boolean failed() {
@@ -146,9 +154,9 @@ public class SwingTalker implements Talker {
         @Override
         protected Object doInBackground() throws Exception {
             try {
-                for ( String sentence: sentences ) {
+                for ( Speech sentence: commentary.getSentences() ) {
                     publish(sentence);
-                    talker.say(sentence);
+                    talker.say(sentence.getSpeakAs());
                     if ( isCancelled() ) {
                         return null;
                     }
@@ -160,9 +168,9 @@ public class SwingTalker implements Talker {
         }
         
         @Override
-        protected void process(List<String> chunks) {
-            for ( String chunk: chunks ) { 
-                log.debug("Commentator: " + chunk);
+        protected void process(List<Speech> chunks) {
+            for ( Speech chunk: chunks ) { 
+                log.debug("Commentator: " + chunk.getDisplayAs());
                 for ( TalkListener listener: listeners ) {
                     listener.talkStarted(chunk);
                 }

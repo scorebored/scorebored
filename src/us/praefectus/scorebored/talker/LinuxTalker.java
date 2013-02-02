@@ -67,14 +67,14 @@ public class LinuxTalker extends AbstractTalker {
     }
       
     @Override
-    public void say(String... sentences) 
+    public void say(String sentence) 
             throws TalkException, InterruptedException {
         Process process = null;
-        String chat = Strings.joinArray(" ", sentences);
+      
         try {
             if ( !isMute() ) { 
                 process = runtime.exec(new String[] {
-                    "espeak", "-v" + getVoice().getId(), chat
+                    "espeak", "-v" + getVoice().getId(), sentence
                 });
                 process.waitFor();
                 process = null;
@@ -82,7 +82,7 @@ public class LinuxTalker extends AbstractTalker {
                 muteSleep();
             }
         } catch ( IOException ie ) { 
-            throw new TalkException(chat, ie);
+            throw new TalkException(sentence, ie);
         } finally {
             if ( process != null ) {
                 process.destroy();

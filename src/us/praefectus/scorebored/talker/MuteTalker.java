@@ -41,7 +41,7 @@ public class MuteTalker extends AbstractTalker {
     }
     
     @Override
-    public void say(String... text) throws TalkException, InterruptedException {
+    public void say(String sentence) throws TalkException, InterruptedException {
         muteSleep();
     }
 

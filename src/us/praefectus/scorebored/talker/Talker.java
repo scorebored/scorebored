@@ -1,5 +1,6 @@
 package us.praefectus.scorebored.talker;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Set;
  * </p>
  */
 public interface Talker {
-    
+
     /**
      * Speaks text.
      * 
@@ -32,14 +33,19 @@ public interface Talker {
      * the time specified by {@link #getMuteWaitTime()}. 
      * </p>
      * 
-     * @param sentences the sentences to speak
+     * @param sentence the sentence to speak
      * @throws TalkException if an underlying error prevented the voice from
      * speaking.
      * @throws InterruptedException if the thread was interrupted
-     */
-    public void say(String... sentences) 
-            throws TalkException, InterruptedException;
-   
+     */    
+    public void say(String sentence) throws TalkException, InterruptedException;
+    
+    
+    public void say(String... sentences) throws TalkException, InterruptedException;
+    
+    public void say(Commentary commentary) throws TalkException, InterruptedException;
+    
+    
     /**
      * Gets the set of voice styles supported by this talker.
      * 

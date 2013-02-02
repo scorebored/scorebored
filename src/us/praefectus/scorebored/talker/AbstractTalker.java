@@ -37,6 +37,21 @@ public abstract class AbstractTalker implements Talker {
         setVoice(Check.notNull(defaultVoice));
     }
     
+    
+    @Override
+    public void say(String... sentences) throws TalkException, InterruptedException {
+        for ( String sentence: sentences ) {
+            say(sentence);
+        }
+    }
+    
+    @Override
+    public void say(Commentary commentary) throws TalkException, InterruptedException {
+        for ( Speech speech: commentary.getSentences() ) {
+            say(speech.getSpeakAs());
+        }
+    }
+    
     @Override
     public final void setVoice(Voice voice) {
         Check.notNull(voice);

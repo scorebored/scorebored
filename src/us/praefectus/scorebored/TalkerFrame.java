@@ -1,6 +1,7 @@
 package us.praefectus.scorebored;
 
 import javax.swing.DefaultComboBoxModel;
+import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.talker.TalkListener;
 import us.praefectus.scorebored.talker.SwingTalker;
 import us.praefectus.scorebored.talker.Voice;
@@ -23,7 +24,7 @@ public class TalkerFrame extends javax.swing.JFrame {
         
         talker.addListener(new TalkListener() {
             @Override
-            public void talkStarted(String text) {
+            public void talkStarted(Speech speech) {
                 silenceButton.setEnabled(true);
             }
 
