@@ -10,19 +10,36 @@ public class Commentary {
     private List<Speech> sentences = new ArrayList<Speech>();
     
     public Commentary() {
+        next("");
     }
     
     public Commentary add(String sentence) {
-        sentences.add(new Speech(sentence));
-        return this;
+        return add(new Speech(sentence));
     }
     
     public Commentary add(String displayAs, String speakAs) {
-        sentences.add(new Speech(displayAs, speakAs));
-        return this;
+        return add(new Speech(displayAs, speakAs));
     }
     
     public Commentary add(Speech sentence) {
+        int last = sentences.size() - 1;
+        Speech old = sentences.get(last);
+        Speech speech = new Speech(
+                old.getDisplayAs() + sentence.getDisplayAs(),
+                old.getSpeakAs() + sentence.getSpeakAs());
+        sentences.set(last, speech);
+        return this;
+    }
+    
+    public Commentary next(String sentence) {
+        return next(new Speech(sentence));
+    }
+    
+    public Commentary next(String displayAs, String speakAs) { 
+        return next(new Speech(displayAs, speakAs));
+    }
+    
+    public Commentary next(Speech sentence) {
         sentences.add(sentence);
         return this;
     }

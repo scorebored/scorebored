@@ -1,9 +1,7 @@
 package us.praefectus.scorebored;
 
-import us.praefectus.scorebored.swing.Swing;
-import us.praefectus.scorebored.talker.TalkException;
+import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.util.Check;
-import us.praefectus.scorebored.Match;
 
 public class Team {
 
@@ -13,7 +11,7 @@ public class Team {
     }
 
     private Side side;
-    private String name;
+    private Speech name;
     private TeamColor color;
     private int score;
     private int wins;
@@ -45,14 +43,14 @@ public class Team {
     /**
      * @return the name
      */
-    public String getName() {
+    public Speech getName() {
         return name;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
+    public void setName(Speech name) {
         this.name = name;
     }
 

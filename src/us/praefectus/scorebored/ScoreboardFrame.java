@@ -147,13 +147,13 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     
     public void refresh() {
         Team leftTeam = match.getTeam(Team.Side.LEFT);
-        leftTeamNameText.setText(leftTeam.getName());
+        leftTeamNameText.setText(leftTeam.getName().getDisplayAs());
         leftScoreText.setText("" + leftTeam.getScore());
         leftServerText.setText(match.getServer() == Team.Side.LEFT 
                 ? "\u21A2" : "");
         
         Team rightTeam = match.getTeam(Team.Side.RIGHT);
-        rightTeamNameText.setText(rightTeam.getName());
+        rightTeamNameText.setText(rightTeam.getName().getDisplayAs());
         rightScoreText.setText("" + rightTeam.getScore());
         rightServerText.setText(match.getServer() == Team.Side.RIGHT 
                 ? "\u21A3" : "");

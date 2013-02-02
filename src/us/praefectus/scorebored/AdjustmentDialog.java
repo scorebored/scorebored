@@ -26,14 +26,14 @@ public class AdjustmentDialog extends javax.swing.JDialog {
             rightTeamWinsText.setVisible(false);
         }
         
-        leftTeamNameLabel.setText(leftTeam.getName());
+        leftTeamNameLabel.setText(leftTeam.getName().getDisplayAs());
         leftTeamScoreText.setText(String.valueOf(leftTeam.getScore()));
         leftTeamWinsText.setText(String.valueOf(leftTeam.getWins()));
         if ( match.getServer() == Side.LEFT ) { 
             leftTeamServerRadio.setSelected(true);
         }
 
-        rightTeamNameLabel.setText(rightTeam.getName());
+        rightTeamNameLabel.setText(rightTeam.getName().getDisplayAs());
         rightTeamScoreText.setText(String.valueOf(rightTeam.getScore()));
         rightTeamWinsText.setText(String.valueOf(rightTeam.getWins()));
         if ( match.getServer() == Side.RIGHT ) { 

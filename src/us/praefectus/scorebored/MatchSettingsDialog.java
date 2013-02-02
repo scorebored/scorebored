@@ -4,7 +4,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import us.praefectus.scorebored.swing.WindowManager;
-import us.praefectus.scorebored.talker.SwingTalker;
+import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.talker.Voice;
 import us.praefectus.scorebored.util.Validate;
 import us.praefectus.scorebored.util.ValidationException;
@@ -36,11 +36,17 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
         updateTeamColorModel();
         
         Team leftTeam = match.getTeam(Team.Side.LEFT);
-        leftTeamNameText.setText(leftTeam.getName());
+        leftTeamNameText.setText(leftTeam.getName().getDisplayAs());
+        if ( !leftTeam.getName().getDisplayAs().equals(leftTeam.getName().getSpeakAs()) ) {
+            leftTeamSayText.setText(leftTeam.getName().getSpeakAs());
+        }
         leftTeamColorCombo.setSelectedItem(leftTeam.getColor());
         
         Team rightTeam = match.getTeam(Team.Side.RIGHT);
-        rightTeamNameText.setText(rightTeam.getName());
+        rightTeamNameText.setText(rightTeam.getName().getDisplayAs());
+        if ( !rightTeam.getName().getDisplayAs().equals(rightTeam.getName().getSpeakAs()) ) {
+            rightTeamSayText.setText(rightTeam.getName().getSpeakAs());
+        }
         rightTeamColorCombo.setSelectedItem(rightTeam.getColor());
         
         subtitlesCheck.setSelected(match.isSubtitled());
@@ -78,11 +84,11 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             match.getTalker().setVoice((Voice)commentatorCombo.getSelectedItem());
             match.setSubtitled(subtitlesCheck.isSelected());
             Team leftTeam = match.getTeam(Team.Side.LEFT);
-            leftTeam.setName(leftTeamNameText.getText());
+            leftTeam.setName(new Speech(leftTeamNameText.getText(), leftTeamSayText.getText()));
             leftTeam.setColor((TeamColor)leftTeamColorCombo.getSelectedItem());
 
             Team rightTeam = match.getTeam(Team.Side.RIGHT);
-            rightTeam.setName(rightTeamNameText.getText());
+            rightTeam.setName(new Speech(rightTeamNameText.getText(), rightTeamSayText.getText()));
             rightTeam.setColor((TeamColor)rightTeamColorCombo.getSelectedItem());
             
             boolean newGame = !match.isActive();
@@ -114,6 +120,8 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
         leftTeamNameText = new javax.swing.JTextField();
         leftTeamColorCombo = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
+        leftTeamSayText = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         styleCombo = new javax.swing.JComboBox();
@@ -129,6 +137,8 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
         rightTeamNameText = new javax.swing.JTextField();
         rightTeamColorCombo = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
+        rightTeamSayText = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
@@ -144,6 +154,8 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
 
         jLabel6.setText("Color");
 
+        jLabel9.setText("Say As");
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,13 +164,20 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel6)
-                        .add(20, 20, 20)
-                        .add(leftTeamColorCombo, 0, 507, Short.MAX_VALUE))
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel1)
+                                .add(11, 11, 11))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .add(jLabel9)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(leftTeamSayText)
+                            .add(leftTeamNameText)))
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel1)
-                        .add(18, 18, 18)
-                        .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)))
+                        .add(jLabel6)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(leftTeamColorCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -169,9 +188,12 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                     .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(leftTeamColorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel6))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(leftTeamSayText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel9))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel6)
+                    .add(leftTeamColorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
@@ -223,7 +245,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                                 .add(jLabel2))
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(gameLengthCombo, 0, 448, Short.MAX_VALUE)
+                                .add(gameLengthCombo, 0, 297, Short.MAX_VALUE)
                                 .add(matchLengthCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .add(jPanel2Layout.createSequentialGroup()
                             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -238,7 +260,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
+                .addContainerGap(145, Short.MAX_VALUE)
                 .add(subtitlesCheck)
                 .addContainerGap())
             .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -259,7 +281,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                     .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                         .add(commentatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(jLabel5))
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(42, Short.MAX_VALUE)))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Right Team"));
@@ -270,6 +292,8 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
 
         jLabel8.setText("Color");
 
+        jLabel10.setText("Say As");
+
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -277,15 +301,14 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(jLabel8)
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(jLabel7)
-                        .add(18, 18, 18)
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(rightTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                            .add(rightTeamColorCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .add(jLabel7)
+                    .add(jLabel10)
+                    .add(jLabel8))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(rightTeamColorCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(rightTeamSayText)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, rightTeamNameText))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -296,9 +319,12 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                     .add(rightTeamNameText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(rightTeamSayText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel10))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rightTeamColorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel8))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jLabel8)))
         );
 
         okButton.setText("OK");
@@ -322,25 +348,25 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
-                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                    .add(layout.createSequentialGroup()
                         .add(cancelButton)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(okButton)))
-                .addContainerGap())
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 137, Short.MAX_VALUE)
+                        .add(okButton))
+                    .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))
+                .add(13, 13, 13))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 202, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(okButton)
                     .add(cancelButton))
@@ -379,6 +405,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox commentatorCombo;
     private javax.swing.JComboBox gameLengthCombo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -386,15 +413,18 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JComboBox leftTeamColorCombo;
     private javax.swing.JTextField leftTeamNameText;
+    private javax.swing.JTextField leftTeamSayText;
     private javax.swing.JComboBox matchLengthCombo;
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox rightTeamColorCombo;
     private javax.swing.JTextField rightTeamNameText;
+    private javax.swing.JTextField rightTeamSayText;
     private javax.swing.JComboBox styleCombo;
     private javax.swing.JCheckBox subtitlesCheck;
     // End of variables declaration//GEN-END:variables

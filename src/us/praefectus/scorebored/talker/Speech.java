@@ -1,6 +1,7 @@
 package us.praefectus.scorebored.talker;
 
 import us.praefectus.scorebored.util.Check;
+import us.praefectus.scorebored.util.Strings;
 
 
 public class Speech {
@@ -19,13 +20,17 @@ public class Speech {
     }
     
     public Speech(String text) {
-        this.displayAs = Check.notEmpty(text);
-        this.speakAs = Check.notEmpty(text);
+        this.displayAs = Check.notNull(text);
+        this.speakAs = Check.notNull(text);
     }
     
     public Speech(String displayAs, String speakAs) {
-        this.displayAs = Check.notEmpty(displayAs);
-        this.speakAs = Check.notEmpty(speakAs);
+        this.displayAs = Check.notNull(displayAs);
+        if ( Strings.isEmpty(speakAs) ) {
+            this.speakAs = this.displayAs;
+        } else {
+            this.speakAs = speakAs;
+        }
     }
     
     public String getDisplayAs() {

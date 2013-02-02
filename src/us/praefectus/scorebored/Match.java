@@ -28,9 +28,9 @@ public class Match {
         matchLength = MatchLength.ONE; 
         
         style = Style.LED; 
-        leftTeam.setName("Home Team");
+        leftTeam.setName(new Speech("Home Team"));
         leftTeam.setColor(TeamColor.LED_RED);
-        rightTeam.setName("Away Team");
+        rightTeam.setName(new Speech("Away Team"));
         rightTeam.setColor(TeamColor.LED_CYAN);
         oferCounter = 1;
         pastPointTracker = "";
@@ -140,10 +140,10 @@ public class Match {
 
         if ( server == null ) {
             server = side;
-            commentary.add(team.getName() + " serves first.");
+            commentary.add(team.getName()).add(" serves first.");
         } else {                
             team.setScore(team.getScore() + 1);
-            commentary.add("Point " + team.getName());
+            commentary.add("Point ").add(team.getName());
             if ( isEndOfGame() ) {
                 Team winner = getWinner();
                 Team loser  = getLoser();
@@ -152,15 +152,15 @@ public class Match {
                 
                 if(leftTeam.getWins() == matchLength.getMinGames() ||
                    rightTeam.getWins() == matchLength.getMinGames()) {
-                    commentary.add("Congratulations " + winner.getName() +
-                                   ", You have Defeated " + loser.getName());  
+                    commentary.next("Congratulations ").add(winner.getName())
+                              .next("You have defeated ").add(loser.getName());
                 }
                 else {
-                     commentary.add("Switch sides, losers serve first.");
+                     commentary.next("Switch sides, losers serve first.");
                 }
                 if(loser.getScore() <= 12) {
-                    commentary.add("Sorry " + loser.getName() + 
-                            ", Jacob is not impressed!");
+                    commentary.next("Sorry ").add(loser.getName())
+                            .add(", Jacob is not impressed!");
                 }              
             }
             else {
@@ -172,7 +172,7 @@ public class Match {
                         commentary.add("Change servers", "Change servers!");
                     }
                     switchServers();
-                    String name = getTeam(server).getName();
+                    String name = getTeam(server).getName().getSpeakAs();
                     oferCounter = 0;
                 }
                 //announce score
@@ -194,7 +194,7 @@ public class Match {
     }
 
     public Commentary checkForOfer(Team team, Commentary commentary) {
-        if(pastPointTracker.equals(team.getName())) {
+        if(pastPointTracker.equals(team.getName().getDisplayAs())) {
             oferCounter ++;
             if (gameLength == GameLength.TWENTY_ONE) {
                 if (oferCounter == 5) {
@@ -208,7 +208,7 @@ public class Match {
             }
         }
         else {
-            pastPointTracker = team.getName();
+            pastPointTracker = team.getName().getSpeakAs();
             oferCounter = 1;
         }
         return commentary;
@@ -218,24 +218,24 @@ public class Match {
     public Commentary checkForGamePoint(Commentary commentary) {    
         if(leftTeam.getScore() >= 20 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage " + leftTeam.getName());
+                commentary.add("Advantage ").add(leftTeam.getName());
             }
             else if(leftTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match Point " + leftTeam.getName());
+                commentary.add("Match point ").add(leftTeam.getName());
             }
             else {
-                commentary.add("Game Point " + leftTeam.getName());
+                commentary.add("Game point ").add(leftTeam.getName());
             }
         }
         if(rightTeam.getScore() >= 20 && rightTeam.getScore() - leftTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage " + rightTeam.getName());
+                commentary.add("Advantage ").add(rightTeam.getName());
             }
             else if(rightTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match Point " + rightTeam.getName());
+                commentary.add("Match point ").add(rightTeam.getName());
             }
             else {
-                commentary.add("Game Point " + rightTeam.getName());
+                commentary.add("Game point ").add(rightTeam.getName());
             }
         }
         
@@ -258,9 +258,10 @@ public class Match {
     }
 
     public void introductionCommentary() {
-        talker.say("Todays matchup: " + getTeam(Team.Side.LEFT).getName() +
-                        " versus "     + getTeam(Team.Side.RIGHT).getName(), 
-                    "Volley for serve");
+        talker.say(new Commentary() 
+                .add("Today's matchup: ").add(getTeam(Team.Side.LEFT).getName())
+                .add(" versus ").add(getTeam(Team.Side.RIGHT).getName())
+                .next("Volley for serve"));
     }
     
     /**
