@@ -3,7 +3,7 @@
 <plist version="0.9">
 <dict>
 	<key>CFBundleName</key>
-	<string>Scorebored</string>
+	<string>Pong Scorebored</string>
 	<key>CFBundleIdentifier</key>
 	<string>us.praefectus.scorebored.Main</string>
 	<key>CFBundleVersion</key>
