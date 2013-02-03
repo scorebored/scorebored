@@ -45,7 +45,6 @@ public interface Talker {
     
     public void say(Commentary commentary) throws TalkException, InterruptedException;
     
-    
     /**
      * Gets the set of voice styles supported by this talker.
      * 

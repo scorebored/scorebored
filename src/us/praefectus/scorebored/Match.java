@@ -3,11 +3,14 @@ package us.praefectus.scorebored;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.log4j.Logger;
 import us.praefectus.scorebored.Team.Side;
 import us.praefectus.scorebored.talker.*;
 import us.praefectus.scorebored.util.Check;
 
 public class Match {
+    
+    private static final Logger log = Logger.getLogger(Match.class);
     
     private SwingTalker talker;
     private Style style; 
@@ -19,21 +22,25 @@ public class Match {
     private Team.Side server;
     private List<MatchListener> listeners = new LinkedList<MatchListener>();
     private boolean subtitles = false;
-    private String pastPointTracker;
-    private int oferCounter;
+
+    private List<PointHistory> histories = new ArrayList<PointHistory>();
     
-    public Match(SwingTalker talker) {
+    static { 
+        //log.setLevel(Level.TRACE);
+    }
+    
+    public Match(SwingTalker talker) {        
+
         this.talker = talker;
         gameLength = GameLength.TWENTY_ONE;
         matchLength = MatchLength.ONE; 
         
         style = Style.LED; 
+
         leftTeam.setName(new Speech("Home Team"));
         leftTeam.setColor(TeamColor.LED_RED);
         rightTeam.setName(new Speech("Away Team"));
         rightTeam.setColor(TeamColor.LED_CYAN);
-        oferCounter = 1;
-        pastPointTracker = "";
     }
     
     public void reset() {
@@ -43,8 +50,8 @@ public class Match {
         rightTeam.setWins(0);
         server = null;
         setActive(false);
-        oferCounter = 1;
-        pastPointTracker = "";
+
+        histories.clear();
     }
     
     public void switchSides() {
@@ -58,6 +65,11 @@ public class Match {
         } else if ( server == Side.RIGHT ) { 
             server = Side.LEFT;
         }
+        histories.clear();
+    }
+    
+    public void clearHistory() {
+        histories.clear();
     }
     
     public boolean isOvertime() {        
@@ -120,7 +132,40 @@ public class Match {
         }
     }
     
-    public void advanceTeam(Team.Side side) {
+    public void incrementTeamVictory(Team.Side side) {
+        Team team = getTeam(side);
+        if(team.getWins() < matchLength.getMinGames() - 1 ) {
+            team.setWins(team.getWins() + 1);
+        }
+    }
+
+    public void decrementTeamVictory(Team.Side side) {
+       Team team = getTeam(side);
+       if(team.getWins() > 0) {
+        team.setWins(team.getWins() - 1);
+       }
+    }
+
+    public void decrementTeamScore(Team.Side side) {
+        Team team = getTeam(side);
+        log.trace("Decrement team: " + team);
+
+        if ( team.getScore() == 0 ) {
+            return;
+        }
+        if ( isEndOfGame() ) {
+            team.setWins(team.getWins() - 1);
+        }
+        if ( isServerChange() ) {
+            this.switchServers();
+        }
+        histories.add(0, new PointHistory(side, PointHistory.Type.DECREMENT));
+        team.setScore(team.getScore() - 1);
+    }
+    
+    public void incrementTeamScore(Team.Side side) {
+        Team team = getTeam(side);
+        log.trace("Increment team: " + team);
         Commentary commentary = new Commentary();
         
         if ( isEndOfMatch() ) { 
@@ -136,14 +181,13 @@ public class Match {
             return;
         }
 
-        Team team = getTeam(side);
-
         if ( server == null ) {
             server = side;
-            commentary.add(team.getName()).add(" serves first.");
+            commentary.add(team.getName() + " serves first.");
         } else {                
             team.setScore(team.getScore() + 1);
-            commentary.add("Point ").add(team.getName());
+            histories.add(0, new PointHistory(side, PointHistory.Type.INCREMENT));
+            commentary.add("Point " + team.getName());
             if ( isEndOfGame() ) {
                 Team winner = getWinner();
                 Team loser  = getLoser();
@@ -152,28 +196,34 @@ public class Match {
                 
                 if(leftTeam.getWins() == matchLength.getMinGames() ||
                    rightTeam.getWins() == matchLength.getMinGames()) {
-                    commentary.next("Congratulations ").add(winner.getName())
-                              .next("You have defeated ").add(loser.getName());
+
+                    commentary.add("Congratulations " + winner.getName() +
+                                   ", You have Defeated " + loser.getName());  
                 }
                 else {
-                     commentary.next("Switch sides, losers serve first.");
+                     commentary.add("Switch sides, losers serve first.");
                 }
-                if(loser.getScore() <= 12) {
-                    commentary.next("Sorry ").add(loser.getName())
-                            .add(", Jacob is not impressed!");
+                if(loser.getScore() == 0) {
+                    commentary.add("Perfect game!");
+                } else if(loser.getScore() <= 12) {
+                    commentary.add("Sorry " + loser.getName() + 
+                            ", Jacob is not impressed!");
                 }              
             }
             else {
+                int totalScore = leftTeam.getScore() + rightTeam.getScore();
                 //check for o-fer and add to commentary
-                commentary = checkForOfer(team, commentary);
+                if ( !isOvertime() && totalScore != 0 && isServerChange() ) {
+                    log.trace("Check for ofer");
+                    commentary = checkForOfer(team, commentary);
+                }
 
                 if ( isServerChange() ) {
                     if(!isOvertime()) {
-                        commentary.add("Change servers", "Change servers!");
+                        commentary.add("Change servers!");
                     }
                     switchServers();
-                    String name = getTeam(server).getName().getSpeakAs();
-                    oferCounter = 0;
+                    //String name = getTeam(server).getName();
                 }
                 //announce score
                 if(!isOvertime()) {
@@ -182,7 +232,7 @@ public class Match {
                 }
                 else {
                     if(leftTeam.getScore() == rightTeam.getScore()) {
-                        commentary.add("Deuce", "Deuce!");
+                        commentary.add("Deuce!");
                     }
                 }
 
@@ -190,52 +240,59 @@ public class Match {
                 commentary = checkForGamePoint(commentary);
             }
         }
+
+        log.trace("Score: " + leftTeam.getName() + " " + leftTeam.getScore() + 
+                " to " + rightTeam.getName() + " " + rightTeam.getScore());
         talker.say(commentary);
     }
 
     public Commentary checkForOfer(Team team, Commentary commentary) {
-        if(pastPointTracker.equals(team.getName().getDisplayAs())) {
-            oferCounter ++;
-            if (gameLength == GameLength.TWENTY_ONE) {
-                if (oferCounter == 5) {
-                    commentary.add("O-fer!", "Oh fer!");
-                }
-            }
-            if (gameLength == GameLength.ELEVEN) {
-                if(oferCounter == 2) {
-                    commentary.add("O-fer!", "Oh fer!");
-                }
+        int runCount  = PointHistory.getRunCount(histories);
+        log.trace("Point run count: " + runCount);
+        if (gameLength == GameLength.TWENTY_ONE) {
+            int ofers = runCount / 5;
+            if (ofers == 1) {
+                commentary.add("O-fer!");
+            } else if (ofers == 2) {
+                commentary.add("Ken-fer!");
+            } else if (ofers == 3) {
+                commentary.add("Turkey!");
+            } else if (ofers == 4) {
+                commentary.add("Double Ken-fer!");
             }
         }
-        else {
-            pastPointTracker = team.getName().getSpeakAs();
-            oferCounter = 1;
+        if (gameLength == GameLength.ELEVEN) {
+            int ofers = runCount / 4;
+            if ( ofers == 1 ) {
+                commentary.add("O-fer!");
+            } else if ( ofers == 2 ) {
+                commentary.add("Double O-fer!");
+            }
         }
         return commentary;
-
     }
 
     public Commentary checkForGamePoint(Commentary commentary) {    
         if(leftTeam.getScore() >= 20 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage ").add(leftTeam.getName());
+                commentary.add("Advantage " + leftTeam.getName());
             }
             else if(leftTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match point ").add(leftTeam.getName());
+                commentary.add("Match Point " + leftTeam.getName());
             }
             else {
-                commentary.add("Game point ").add(leftTeam.getName());
+                commentary.add("Game Point " + leftTeam.getName());
             }
         }
         if(rightTeam.getScore() >= 20 && rightTeam.getScore() - leftTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage ").add(rightTeam.getName());
+                commentary.add("Advantage " + rightTeam.getName());
             }
             else if(rightTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match point ").add(rightTeam.getName());
+                commentary.add("Match Point " + rightTeam.getName());
             }
             else {
-                commentary.add("Game point ").add(rightTeam.getName());
+                commentary.add("Game Point " + rightTeam.getName());
             }
         }
         
@@ -258,10 +315,9 @@ public class Match {
     }
 
     public void introductionCommentary() {
-        talker.say(new Commentary() 
-                .add("Today's matchup: ").add(getTeam(Team.Side.LEFT).getName())
-                .add(" versus ").add(getTeam(Team.Side.RIGHT).getName())
-                .next("Volley for serve"));
+        talker.say("Todays matchup: " + getTeam(Team.Side.LEFT).getName() +
+                        " versus "     + getTeam(Team.Side.RIGHT).getName(), 
+                    "Volley for serve");
     }
     
     /**

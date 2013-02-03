@@ -76,6 +76,8 @@ public class AdjustmentDialog extends javax.swing.JDialog {
             if ( rightTeamServerRadio.isSelected() ) {
                 match.setServer(Team.Side.RIGHT);
             }
+            match.clearHistory();
+
             this.setVisible(false);
             this.dispose();
         } catch ( ValidationException ve ) {

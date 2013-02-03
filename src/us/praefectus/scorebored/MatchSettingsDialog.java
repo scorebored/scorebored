@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import us.praefectus.scorebored.swing.WindowManager;
 import us.praefectus.scorebored.talker.Speech;
+import us.praefectus.scorebored.Team.Side;
+import us.praefectus.scorebored.swing.WindowManager;
 import us.praefectus.scorebored.talker.Voice;
 import us.praefectus.scorebored.util.Validate;
 import us.praefectus.scorebored.util.ValidationException;
@@ -69,7 +71,6 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             Validate.notEmpty(rightTeamNameText.getText(), 
                     "Right team needs a name");
             
-
             int matchLength = 
                     ((MatchLength)matchLengthCombo.getSelectedItem()).getMinGames();
             if ( match.getTeam(Team.Side.LEFT).getWins() >= matchLength ||
@@ -78,17 +79,31 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                         "match");
             }
             
+            GameLength gameLength = 
+                    (GameLength)gameLengthCombo.getSelectedItem();
+            if ( gameLength != match.getGameLength() ) {
+                int leftScore = match.getTeam(Side.LEFT).getScore(); 
+                int rightScore = match.getTeam(Side.RIGHT).getScore();
+                int gamePoints = gameLength.getPoints();
+                if ( leftScore >= gamePoints || rightScore >= gamePoints ) {
+                    throw new ValidationException("The game length cannot " + 
+                            "be changed");
+                }
+            }
+            
             match.setGameLength((GameLength)gameLengthCombo.getSelectedItem());
             match.setMatchLength((MatchLength)matchLengthCombo.getSelectedItem());
             match.setStyle((Style)styleCombo.getSelectedItem());
             match.getTalker().setVoice((Voice)commentatorCombo.getSelectedItem());
             match.setSubtitled(subtitlesCheck.isSelected());
             Team leftTeam = match.getTeam(Team.Side.LEFT);
+
             leftTeam.setName(new Speech(leftTeamNameText.getText(), leftTeamSayText.getText()));
             leftTeam.setColor((TeamColor)leftTeamColorCombo.getSelectedItem());
 
             Team rightTeam = match.getTeam(Team.Side.RIGHT);
             rightTeam.setName(new Speech(rightTeamNameText.getText(), rightTeamSayText.getText()));
+
             rightTeam.setColor((TeamColor)rightTeamColorCombo.getSelectedItem());
             
             boolean newGame = !match.isActive();
@@ -96,7 +111,9 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             match.setActive(true);
 
             this.setVisible(false);
-            ScoreboardFrame scoreboardFrame = (ScoreboardFrame)windowManager.get(ScoreboardFrame.class);
+
+            ScoreboardFrame scoreboardFrame = windowManager.getScoreboardFrame();
+
             scoreboardFrame.applyStyle();
             scoreboardFrame.refresh();
             scoreboardFrame.setVisible(true);

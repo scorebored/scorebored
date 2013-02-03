@@ -37,7 +37,6 @@ public abstract class AbstractTalker implements Talker {
         setVoice(Check.notNull(defaultVoice));
     }
     
-    
     @Override
     public void say(String... sentences) throws TalkException, InterruptedException {
         for ( String sentence: sentences ) {
@@ -51,7 +50,7 @@ public abstract class AbstractTalker implements Talker {
             say(speech.getSpeakAs());
         }
     }
-    
+
     @Override
     public final void setVoice(Voice voice) {
         Check.notNull(voice);

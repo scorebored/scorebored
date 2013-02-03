@@ -2,6 +2,10 @@ package us.praefectus.scorebored;
 
 import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.util.Check;
+import us.praefectus.scorebored.swing.Swing;
+import us.praefectus.scorebored.talker.TalkException;
+import us.praefectus.scorebored.util.Check;
+import us.praefectus.scorebored.Match;
 
 public class Team {
 
@@ -96,5 +100,9 @@ public class Team {
         this.wins = wins;
     }
     
+    @Override
+    public String toString() {
+        return this.name.toString();
+    }
 }
 

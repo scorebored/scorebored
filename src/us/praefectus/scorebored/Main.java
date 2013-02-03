@@ -17,7 +17,8 @@ public class Main {
     
     private FontResource[] fonts = {
         new FontResource(Font.TRUETYPE_FONT, "/fonts/Inconsolata.ttf"),
-        new FontResource(Font.TRUETYPE_FONT, "/fonts/DS-Digital.ttf")
+        new FontResource(Font.TRUETYPE_FONT, "/fonts/DS-Digital.ttf"),
+        new FontResource(Font.TRUETYPE_FONT, "/fonts/pastel_crayon.ttf"),
     };
 
     private Class<? extends Talker> findTalkerClass() throws TalkException {
@@ -107,6 +108,11 @@ public class Main {
             windowManager.register(dashboardFrame);
             ScoreboardFrame scoreboardFrame = new ScoreboardFrame(match);
             windowManager.register(scoreboardFrame);
+
+            TalkerFrame talkerFrame = 
+                    new TalkerFrame(talkerFactory.newSwingTalker());
+            Swing.centerOnScreen(talkerFrame);
+            windowManager.register(talkerFrame);
 
             Swing.centerOnScreen(dashboardFrame);
             dashboardFrame.setVisible(true);

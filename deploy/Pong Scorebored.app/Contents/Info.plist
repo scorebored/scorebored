@@ -3,11 +3,11 @@
 <plist version="0.9">
 <dict>
 	<key>CFBundleName</key>
-	<string>Pong Scorebored</string>
+	<string>Scorebored</string>
 	<key>CFBundleIdentifier</key>
 	<string>us.praefectus.scorebored.Main</string>
 	<key>CFBundleVersion</key>
-	<string>100.0</string>
+	<string>1.1.0</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<string>true</string>
 	<key>CFBundleExecutable</key>
@@ -27,7 +27,7 @@
 		<key>MainClass</key>
 		<string>us.praefectus.scorebored.Main</string>
 		<key>JVMVersion</key>
-		<string>1.5+</string>
+		<string>1.6+</string>
 		<key>ClassPath</key>
 			<array>
 			<string>$JAVAROOT/pong-scorebored.jar</string>

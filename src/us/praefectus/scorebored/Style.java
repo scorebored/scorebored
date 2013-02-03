@@ -10,6 +10,7 @@ public class Style {
     
     public static final Style LED;
     public static final Style LCD;
+    public static final Style WHITEBOARD;
     
     private static final List<Style> STYLES;
     
@@ -53,9 +54,25 @@ public class Style {
                 TeamColor.LCD
         ));
         
+        WHITEBOARD = new Style();
+        WHITEBOARD.name = "Whiteboard";
+        WHITEBOARD.backgroundColor = new Color(255, 255, 255);
+        WHITEBOARD.textBackgroundColor = new Color(240, 240, 240);
+        WHITEBOARD.buttonTextColor = new Color(0, 0, 0);
+        WHITEBOARD.buttonHoverColor = Color.BLACK;
+        WHITEBOARD.subtitleColor = Color.BLACK;
+        WHITEBOARD.scoreFont = new Font("pastel", Font.PLAIN, 500);
+        WHITEBOARD.teamColors = Collections.unmodifiableList(Arrays.asList(  
+                TeamColor.DARK_RED,
+                TeamColor.DARK_BLUE,
+                TeamColor.DARK_YELLOW,
+                TeamColor.DARK_GREEN,
+                TeamColor.BLACK));
+        
         STYLES = Collections.unmodifiableList(Arrays.asList(
                 LED,
-                LCD
+                LCD,
+                WHITEBOARD
         ));
     }
     

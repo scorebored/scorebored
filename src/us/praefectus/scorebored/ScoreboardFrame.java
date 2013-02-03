@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import us.praefectus.scorebored.swing.Swing;
 import us.praefectus.scorebored.swing.TextRenderer;
@@ -92,7 +93,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         }
         super.setVisible(visible);
         if ( visible ) { 
-            JFrame frame = (JFrame)windowManager.get(DashboardFrame.class);
+            JFrame frame = windowManager.getDashboardFrame();
             frame.setVisible(false);
         }
     }
@@ -128,7 +129,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         
         this.getContentPane().setBackground(style.getBackgroundColor());
         final JButton buttons[] = {
-            yeahBabyButton, noBabyButton, shhButton, excuseButton, adjustButton,
+            yeahBabyButton, noBabyButton, shhButton, excuseButton,
             settingsButton, closeButton, muteButton, netButton, serverButton,
             scoreButton
         };
@@ -154,6 +155,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         
         Team rightTeam = match.getTeam(Team.Side.RIGHT);
         rightTeamNameText.setText(rightTeam.getName().getDisplayAs());
+
         rightScoreText.setText("" + rightTeam.getScore());
         rightServerText.setText(match.getServer() == Team.Side.RIGHT 
                 ? "\u21A3" : "");
@@ -187,27 +189,84 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         refresh();
     }
     
+    private void advanceTeam(Team.Side side) {
+        try {
+            match.incrementTeamScore(side);
+        } catch ( Exception e ) {
+            Swing.showError(e);
+        }
+        refresh();
+    }
+    
+    private void advanceVictory(Team.Side side) {
+        try {
+            match.incrementTeamVictory(side);
+        } catch ( Exception e ) {
+            Swing.showError(e);
+        }
+        refresh();
+    }
+
+    private void retreatTeam(Team.Side side) {
+        try {
+            match.decrementTeamScore(side);
+        } catch ( Exception e ) {
+            Swing.showError(e);
+        }
+        refresh();
+    }
+    
+    private void retreatVictory(Team.Side side) {
+        try {
+            match.decrementTeamVictory(side);
+        } catch ( Exception e ) {
+            Swing.showError(e);
+        }
+        refresh();
+    }
+        
     class KeyboardControl implements KeyEventDispatcher {
         @Override
         public boolean dispatchKeyEvent(KeyEvent ke) {
             if ( ke.getID() == KeyEvent.KEY_RELEASED ) {
+
+                if ( ke.isShiftDown() ) {
+                    switch ( ke.getKeyCode() ) {
+                        case KeyEvent.VK_RIGHT:
+                            retreatTeam(Team.Side.RIGHT);
+                            return true;
+                        case KeyEvent.VK_LEFT:
+                            retreatTeam(Team.Side.LEFT);
+                            return true;
+                        case KeyEvent.VK_1:
+                            retreatVictory(Team.Side.LEFT);
+                            return true;
+                        case KeyEvent.VK_2:
+                            retreatVictory(Team.Side.RIGHT);
+                            return true;
+                    }
+                }
                 
                 if ( (ke.getKeyCode() == KeyEvent.VK_LEFT || 
                       ke.getKeyCode() == KeyEvent.VK_RIGHT) && match.isEndOfMatch() ) {
                     setVisible(false);
-                    windowManager.get(DashboardFrame.class).setVisible(true);
+                    windowManager.getDashboardFrame().setVisible(true);
                     match.reset();
                     return true;
                 }
 
                 switch ( ke.getKeyCode() ) { 
                     case KeyEvent.VK_RIGHT:
-                        match.advanceTeam(Team.Side.RIGHT);
-                        refresh();
+                        advanceTeam(Team.Side.RIGHT);
                         return true;
                     case KeyEvent.VK_LEFT:
-                        match.advanceTeam(Team.Side.LEFT);
-                        refresh();
+                        advanceTeam(Team.Side.LEFT);
+                        return true;
+                    case KeyEvent.VK_1:
+                        advanceVictory(Team.Side.LEFT);
+                        return true;
+                    case KeyEvent.VK_2:
+                        advanceVictory(Team.Side.RIGHT);
                         return true;
                     case KeyEvent.VK_A:
                         showAdjustmentDialog();
@@ -343,7 +402,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         shhButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
         excuseButton = new javax.swing.JButton();
-        adjustButton = new javax.swing.JButton();
+
         talkText = new javax.swing.JTextField();
         settingsButton = new javax.swing.JButton();
         muteButton = new javax.swing.JButton();
@@ -461,17 +520,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
             }
         });
 
-        adjustButton.setMnemonic('A');
-        adjustButton.setText("Adjust");
-        adjustButton.setActionCommand("Yeah Baby");
-        adjustButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        adjustButton.setOpaque(true);
-        adjustButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adjustButtonActionPerformed(evt);
-            }
-        });
-
         talkText.setText("Speech");
         talkText.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         talkText.addActionListener(new java.awt.event.ActionListener() {
@@ -560,8 +608,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(settingsButton)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(adjustButton)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(excuseButton)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(serverButton)
@@ -621,7 +667,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(closeButton)
-                    .add(adjustButton)
                     .add(excuseButton)
                     .add(settingsButton)
                     .add(muteButton)
@@ -665,7 +710,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice().setFullScreenWindow(null);
         this.setVisible(false);
-        windowManager.get(DashboardFrame.class).setVisible(true);
+        windowManager.getDashboardFrame().setVisible(true);
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void excuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excuseButtonActionPerformed
@@ -715,7 +760,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton adjustButton;
     private javax.swing.JButton closeButton;
     private javax.swing.JButton excuseButton;
     private javax.swing.JTextField leftScoreText;

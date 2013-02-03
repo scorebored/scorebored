@@ -34,6 +34,11 @@ public class Swing {
     
     public static void showError(String message, Throwable t) { 
         log.error(message, t);
+        Window fullScreenWindow = 
+                env.getDefaultScreenDevice().getFullScreenWindow();
+        if ( fullScreenWindow != null ) { 
+             env.getDefaultScreenDevice().setFullScreenWindow(null);
+        }
         boolean done = false;
         while ( !done ) {
             int value = JOptionPane.showOptionDialog(
@@ -58,9 +63,13 @@ public class Swing {
                     System.exit(1);
             }
         }
+
+        if ( fullScreenWindow != null ) {
+             env.getDefaultScreenDevice().setFullScreenWindow(fullScreenWindow);   
+        }
     }
     
     public static void showError(Throwable t) {
-        showError("An unexpected error has occured", t);
+        showError("An unexpected error has occured.", t);
     }
 }

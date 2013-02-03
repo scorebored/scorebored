@@ -7,6 +7,8 @@ package us.praefectus.scorebored;
 public class JacobExcuses {
     
     private static final String[] jacobList = new String[] {
+        "I am over trained.",
+        "Did that nick?",
         "Your shirt is white or orange, cant see the ball when its in front of your shirt.",
         "My back hurts.",
         "I let him win",
@@ -17,8 +19,7 @@ public class JacobExcuses {
         "These balls are too big.",
         "I thought he was Jeff.",
         "My wrist hurts.",
-        "Was that interference?", 
-        "Did that nick?"
+        "Was that interference?"
     };
     
     public String getJacobExcuse() {

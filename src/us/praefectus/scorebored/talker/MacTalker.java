@@ -21,18 +21,18 @@ public class MacTalker extends AbstractTalker {
     /**
      * Path to the say executable.
      */
-    public static final File executable = new File("/usr/bin/say");
+    public static final File EXECUTABLE = new File("/usr/bin/say");
     
     /**
      * Default voice style to use: Alex.
      */
-    public static final Voice defaultVoice = new Voice("Alex");
+    public static final Voice DEFAULT_VOICE = new Voice("Alex");
     
     /**
      * Supported voices by the "say" command.
      */
     private static final Voice[] voices = {
-        defaultVoice, 
+        DEFAULT_VOICE, 
         new Voice("Bruce"), 
         new Voice("Fred"), 
         new Voice("Junior"), 
@@ -70,7 +70,7 @@ public class MacTalker extends AbstractTalker {
      * Creates a new Mac OS X Talker.
      */
     public MacTalker() {
-        super(defaultVoice);
+        super(DEFAULT_VOICE);
     }
     
     @Override
@@ -102,6 +102,6 @@ public class MacTalker extends AbstractTalker {
     }
     
     public static boolean isSupported() {
-        return executable.canExecute();
+        return EXECUTABLE.canExecute();
     }
 }

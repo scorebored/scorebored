@@ -7,11 +7,9 @@ import us.praefectus.scorebored.swing.WindowManager;
 
 public class DashboardFrame extends javax.swing.JFrame {
 
-    private ScoreboardFrame scoreboardFrame = null;
-    private TalkerFrame talkerFrame = null;
     private Match match;
     private WindowManager windowManager = WindowManager.getInstance();
-    
+
     public DashboardFrame(Match match) {
         this.match = match;
         initComponents();
@@ -139,7 +137,7 @@ public class DashboardFrame extends javax.swing.JFrame {
 
     private void scoreboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scoreboardButtonActionPerformed
         if ( match.isActive() ) { 
-            windowManager.get(ScoreboardFrame.class).setVisible(true);
+            windowManager.getScoreboardFrame().setVisible(true);
         } else { 
             JDialog dialog = new MatchSettingsDialog(match);
             Swing.centerOnScreen(dialog);
@@ -148,11 +146,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_scoreboardButtonActionPerformed
 
     private void commentatorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_commentatorButtonActionPerformed
-        if ( talkerFrame == null ) {
-            talkerFrame = new TalkerFrame(match.getTalker());
-            Swing.centerOnScreen(talkerFrame);
-        }
-        talkerFrame.setVisible(true);
+        windowManager.getTalkerFrame().setVisible(true);
     }//GEN-LAST:event_commentatorButtonActionPerformed
 
     private void resetMatchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetMatchButtonActionPerformed
