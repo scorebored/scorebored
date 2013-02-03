@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleName</key>
+	<string>Scorebored</string>
+	<key>CFBundleIdentifier</key>
+	<string>us.praefectus.scorebored.Main</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaApplicationStub</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIconFile</key>
+	<string>paddle.icns</string>
+	<key>Java</key>
+	<dict>
+		<key>MainClass</key>
+		<string>us.praefectus.scorebored.Main</string>
+		<key>JVMVersion</key>
+		<string>1.6+</string>
+		<key>ClassPath</key>
+			<array>
+			<string>$JAVAROOT/pong-scorebored.jar</string>
+			<string>$JAVAROOT/swing-layout-1.0.4.jar</string>
+			<string>$JAVAROOT/log4j-1.2.17.jar</string>
+			</array>
+	</dict>
+</dict>
+</plist>
