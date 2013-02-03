@@ -109,13 +109,17 @@ public class Main {
             ScoreboardFrame scoreboardFrame = new ScoreboardFrame(match);
             windowManager.register(scoreboardFrame);
 
-            TalkerFrame talkerFrame = 
-                    new TalkerFrame(talkerFactory.newSwingTalker());
+            SwingTalker talker = talkerFactory.newSwingTalker();
+            
+            TalkerFrame talkerFrame = new TalkerFrame(talker);
             Swing.centerOnScreen(talkerFrame);
             windowManager.register(talkerFrame);
 
             Swing.centerOnScreen(dashboardFrame);
             dashboardFrame.setVisible(true);
+            
+            talker.say("Shall we play a game?");
+            
             log.debug("Application started");
         } catch ( Exception e ) {
             Swing.showError("Unable to start application: " + e.getMessage(), 
