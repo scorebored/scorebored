@@ -183,11 +183,13 @@ public class Match {
 
         if ( server == null ) {
             server = side;
-            commentary.add(team.getName() + " serves first.");
+            commentary.add(team.getName()).add(" serves first");
         } else {                
             team.setScore(team.getScore() + 1);
             histories.add(0, new PointHistory(side, PointHistory.Type.INCREMENT));
-            commentary.add("Point " + team.getName());
+            if ( !isOvertime() && !isEndOfGame() ) {
+                commentary.add("Point ").add(team.getName());
+            }
             if ( isEndOfGame() ) {
                 Team winner = getWinner();
                 Team loser  = getLoser();
@@ -197,17 +199,19 @@ public class Match {
                 if(leftTeam.getWins() == matchLength.getMinGames() ||
                    rightTeam.getWins() == matchLength.getMinGames()) {
 
-                    commentary.add("Congratulations " + winner.getName() +
-                                   ", You have Defeated " + loser.getName());  
+                    commentary.next("Congratulations ").add(winner.getName()) 
+                              .next("You have defeated ").add(loser.getName());  
                 }
                 else {
-                     commentary.add("Switch sides, losers serve first.");
+                     commentary.add(winner.getName()).add(" wins the game")
+                               .next("Switch sides")
+                               .next("Losers serve first");
                 }
                 if(loser.getScore() == 0) {
-                    commentary.add("Perfect game!");
+                    commentary.next("Perfect game!");
                 } else if(loser.getScore() <= 12) {
-                    commentary.add("Sorry " + loser.getName() + 
-                            ", Jacob is not impressed!");
+                    commentary.next("Sorry ").add(loser.getName())
+                              .add(", Jacob is not impressed!");
                 }              
             }
             else {
@@ -220,7 +224,7 @@ public class Match {
 
                 if ( isServerChange() ) {
                     if(!isOvertime()) {
-                        commentary.add("Change servers!");
+                        commentary.next("Change servers", "Change servers!");
                     }
                     switchServers();
                     //String name = getTeam(server).getName();
@@ -228,11 +232,11 @@ public class Match {
                 //announce score
                 if(!isOvertime()) {
                     AnnounceScore announceScore = new AnnounceScore(this);
-                    commentary.add(announceScore.getScore());
+                    commentary.next(announceScore.getScore());
                 }
                 else {
                     if(leftTeam.getScore() == rightTeam.getScore()) {
-                        commentary.add("Deuce!");
+                        commentary.next("Deuce", "Deuce!");
                     }
                 }
 
@@ -252,21 +256,21 @@ public class Match {
         if (gameLength == GameLength.TWENTY_ONE) {
             int ofers = runCount / 5;
             if (ofers == 1) {
-                commentary.add("O-fer!");
+                commentary.next("Ofer!", "Oh fer!");
             } else if (ofers == 2) {
-                commentary.add("Ken-fer!");
+                commentary.next("Kenfer!", "Ken-fer!");
             } else if (ofers == 3) {
-                commentary.add("Turkey!");
+                commentary.next("Turkey!");
             } else if (ofers == 4) {
-                commentary.add("Double Ken-fer!");
+                commentary.next("Double Kenfer!", "Double Ken-fer!");
             }
         }
         if (gameLength == GameLength.ELEVEN) {
             int ofers = runCount / 4;
             if ( ofers == 1 ) {
-                commentary.add("O-fer!");
+                commentary.next("Ofer!", "Oh fer!");
             } else if ( ofers == 2 ) {
-                commentary.add("Double O-fer!");
+                commentary.next("Double Ofer!", "Double Oh fer!");
             }
         }
         return commentary;
@@ -275,24 +279,24 @@ public class Match {
     public Commentary checkForGamePoint(Commentary commentary) {    
         if(leftTeam.getScore() >= 20 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage " + leftTeam.getName());
+                commentary.next("Advantage ").add(leftTeam.getName());
             }
             else if(leftTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match Point " + leftTeam.getName());
+                commentary.next("Match point");
             }
             else {
-                commentary.add("Game Point " + leftTeam.getName());
+                commentary.next("Game point");
             }
         }
         if(rightTeam.getScore() >= 20 && rightTeam.getScore() - leftTeam.getScore() >= 1) {
             if(isOvertime()) {
-                commentary.add("Advantage " + rightTeam.getName());
+                commentary.next("Advantage ").add(rightTeam.getName());
             }
             else if(rightTeam.getWins() == matchLength.getMinGames() - 1) {
-                commentary.add("Match Point " + rightTeam.getName());
+                commentary.next("Match point");
             }
             else {
-                commentary.add("Game Point " + rightTeam.getName());
+                commentary.next("Game point");
             }
         }
         
@@ -315,9 +319,12 @@ public class Match {
     }
 
     public void introductionCommentary() {
-        talker.say("Todays matchup: " + getTeam(Team.Side.LEFT).getName() +
-                        " versus "     + getTeam(Team.Side.RIGHT).getName(), 
-                    "Volley for serve");
+        talker.say(new Commentary()
+            .add("Today's matchup")
+            .next(getTeam(Team.Side.LEFT).getName())
+            .add(" versus ")
+            .add(getTeam(Team.Side.RIGHT).getName())
+            .next("Volley for serve"));
     }
     
     /**
