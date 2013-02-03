@@ -1,6 +1,8 @@
 package us.praefectus.scorebored;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -8,11 +10,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import org.apache.log4j.Level;
+import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 import us.praefectus.scorebored.swing.Swing;
 import us.praefectus.scorebored.swing.TextRenderer;
 import us.praefectus.scorebored.swing.WindowManager;
+import us.praefectus.scorebored.talker.Commentary;
 import us.praefectus.scorebored.talker.Speech;
 import us.praefectus.scorebored.talker.SwingTalker;
 import us.praefectus.scorebored.talker.TalkListener;
@@ -32,14 +35,16 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     private KeyboardControl keyboardControl = new KeyboardControl();
     private TextRenderer subtitle;
     private boolean keyBindingsEnabled = false;
+    private Font teamNameFont;
+    private Font scoreFont; 
     
     public ScoreboardFrame(final Match match) {
         this.match = match;
         this.talker = match.getTalker();
-        if ( graphicsEnvironment.getDefaultScreenDevice()
-                .isFullScreenSupported() ) { 
+        if ( graphicsEnvironment.getDefaultScreenDevice().isFullScreenSupported() ) {
             this.setUndecorated(true);
         }
+            
         initComponents();
         this.getRootPane().addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) { 
@@ -47,7 +52,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
             }
         });
         
-        Font teamNameFont = new Font("Inconsolata", Font.BOLD, 64);
+        teamNameFont = new Font("Inconsolata", Font.BOLD, 64);
         Font teamScoreFont = new Font("Inconsolata", Font.BOLD, 400);
         
         leftTeamNameText.setFont(teamNameFont);
@@ -77,6 +82,16 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                 repaint();
             }
         });
+
+        
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                applyStyle();
+            }
+        });
+        
+        pack();
         applyStyle();
     }
 
@@ -85,7 +100,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         GraphicsDevice graphicsDevice = 
                 graphicsEnvironment.getDefaultScreenDevice();
         if ( graphicsDevice.isFullScreenSupported() ) {
-            if ( visible ) { 
+            if ( visible && match.isFullScreen() ) { 
                 graphicsDevice.setFullScreenWindow(this);
             } else {
                 graphicsDevice.setFullScreenWindow(null);
@@ -116,12 +131,31 @@ public class ScoreboardFrame extends javax.swing.JFrame {
             c.setBackground(style.getBackgroundColor());
             c.setForeground(match.getTeam(Team.Side.RIGHT).getColor().getColor());
         }
+                
+        teamNameFont = style.getTeamFont();
         
-        leftTeamNameText.setFont(style.getTeamFont());
-        leftWinsText.setFont(style.getTeamFont());
+        Team leftTeam = match.getTeam(Team.Side.LEFT);
+        if ( match.getServer() == Team.Side.LEFT ) {
+            leftTeamNameText.setBackground(leftTeam.getColor().getColor());
+            leftTeamNameText.setForeground(match.getStyle().getBackgroundColor());
+        } else {
+            leftTeamNameText.setForeground(leftTeam.getColor().getColor());
+            leftTeamNameText.setBackground(match.getStyle().getBackgroundColor());           
+        }
+        setTextAndFont(teamNameFont, leftTeamNameText, leftTeam.getName().getDisplayAs());
+        leftWinsText.setFont(teamNameFont);
         leftServerText.setFont(style.getTeamFont());
-        rightTeamNameText.setFont(style.getTeamFont());
-        rightWinsText.setFont(style.getTeamFont());
+        
+        Team rightTeam = match.getTeam(Team.Side.RIGHT);
+        if ( match.getServer() == Team.Side.RIGHT ) {
+            rightTeamNameText.setBackground(rightTeam.getColor().getColor());
+            rightTeamNameText.setForeground(match.getStyle().getBackgroundColor());
+        } else {
+            rightTeamNameText.setForeground(rightTeam.getColor().getColor());
+            rightTeamNameText.setBackground(match.getStyle().getBackgroundColor());           
+        }
+        setTextAndFont(teamNameFont, rightTeamNameText, rightTeam.getName().getDisplayAs());        
+        rightWinsText.setFont(teamNameFont);
         rightServerText.setFont(style.getTeamFont());
 
         leftScoreText.setFont(style.getScoreFont());
@@ -148,17 +182,22 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     
     public void refresh() {
         Team leftTeam = match.getTeam(Team.Side.LEFT);
-        leftTeamNameText.setText(leftTeam.getName().getDisplayAs());
+        setTextAndFont(teamNameFont, leftTeamNameText, leftTeam.getName().getDisplayAs());
         leftScoreText.setText("" + leftTeam.getScore());
-        leftServerText.setText(match.getServer() == Team.Side.LEFT 
-                ? "\u21A2" : "");
+        
+        leftServerText.setText("");
+
+        //leftServerText.setText(match.getServer() == Team.Side.LEFT 
+        //        ? "\u21A2" : "");
         
         Team rightTeam = match.getTeam(Team.Side.RIGHT);
-        rightTeamNameText.setText(rightTeam.getName().getDisplayAs());
-
+        setTextAndFont(teamNameFont, rightTeamNameText, rightTeam.getName().getDisplayAs());
+        
         rightScoreText.setText("" + rightTeam.getScore());
-        rightServerText.setText(match.getServer() == Team.Side.RIGHT 
-                ? "\u21A3" : "");
+        
+        rightServerText.setText("");
+        //rightServerText.setText(match.getServer() == Team.Side.RIGHT 
+        //        ? "\u21A3" : "");
         
         if ( match.getMatchLength() == MatchLength.ONE ) {
             leftWinsText.setText("");
@@ -169,6 +208,28 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         }
         
         applyStyle();
+    }
+    
+    private void setTextAndFont(Font font, JTextField textField, String name) {
+
+        Graphics g = this.getGraphics();
+   
+        int width = textField.getWidth();
+        int actualWidth = (int)g.getFontMetrics(font).getStringBounds(name, g).getWidth();
+
+        //System.out.println(name);
+        //System.out.println("Width: " + width + ", actual: " + actualWidth + " font: " + font.getSize());
+
+        
+        while ( actualWidth > width && font.getSize() > 14 ) {
+            font = font.deriveFont((float)font.getSize() - 1);
+            width = textField.getWidth();
+            actualWidth = (int)g.getFontMetrics(font).getStringBounds(name, g).getWidth();  
+        }
+        //System.out.println("Width: " + width + ", actual: " + actualWidth + " font: " + font.getSize());
+
+        textField.setFont(font);
+        textField.setText(name);
     }
     
     private void showAdjustmentDialog() {
@@ -352,7 +413,9 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     }
 
     private void server() {
-        talker.say(match.getTeam(match.getServer()).getName() + " is Serving.");
+        talker.say(new Commentary()
+                .add(match.getTeam(match.getServer()).getName())
+                .add(" is serving"));
     }
 
     private void jacobExcuse() {
@@ -402,7 +465,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         shhButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
         excuseButton = new javax.swing.JButton();
-
         talkText = new javax.swing.JTextField();
         settingsButton = new javax.swing.JButton();
         muteButton = new javax.swing.JButton();
@@ -626,17 +688,17 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                                     .add(layout.createSequentialGroup()
                                         .add(leftWinsText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(leftTeamNameText)
+                                        .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(leftServerText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 73, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                     .add(leftScoreText))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                    .add(rightScoreText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                                    .add(rightScoreText)
                                     .add(layout.createSequentialGroup()
                                         .add(rightServerText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(rightTeamNameText)
+                                        .add(rightTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(rightWinsText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 44, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                         .add(4, 4, 4)))
@@ -683,7 +745,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
 
         layout.linkSize(new java.awt.Component[] {leftServerText, leftTeamNameText, leftWinsText, rightServerText, rightTeamNameText, rightWinsText}, org.jdesktop.layout.GroupLayout.VERTICAL);
 
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
@@ -716,10 +777,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     private void excuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excuseButtonActionPerformed
         jacobExcuse();
     }//GEN-LAST:event_excuseButtonActionPerformed
-
-    private void adjustButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adjustButtonActionPerformed
-        showAdjustmentDialog();
-    }//GEN-LAST:event_adjustButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         showSettingsDialog();

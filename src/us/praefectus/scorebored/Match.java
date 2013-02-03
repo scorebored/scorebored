@@ -22,7 +22,8 @@ public class Match {
     private Team.Side server;
     private List<MatchListener> listeners = new LinkedList<MatchListener>();
     private boolean subtitles = false;
-
+    private boolean fullScreen = true;
+    
     private List<PointHistory> histories = new ArrayList<PointHistory>();
     
     static { 
@@ -420,4 +421,13 @@ public class Match {
     public SwingTalker getTalker() {
         return talker;
     }
+    
+    public boolean isFullScreen() {
+        return fullScreen;
+    }
+    
+    public void setFullScreen(boolean fullScreen) {
+        this.fullScreen = fullScreen;
+    }
+    
 }

@@ -1,5 +1,7 @@
 package us.praefectus.scorebored;
 
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,6 +22,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
     public MatchSettingsDialog(Match match) {
         super((JFrame)null, true);
         this.match = match;
+        
         initComponents();
         
         matchLengthCombo.setModel(new DefaultComboBoxModel(
@@ -53,8 +56,12 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
         rightTeamColorCombo.setSelectedItem(rightTeam.getColor());
         
         subtitlesCheck.setSelected(match.isSubtitled());
-        
+
         this.getRootPane().setDefaultButton(okButton);
+        
+        this.setPreferredSize(new Dimension(350, 570));
+        pack();
+        
     }
 
     private void updateTeamColorModel() {
@@ -104,9 +111,8 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
 
             Team rightTeam = match.getTeam(Team.Side.RIGHT);
             rightTeam.setName(new Speech(rightTeamNameText.getText(), rightTeamSayText.getText()));
-
             rightTeam.setColor((TeamColor)rightTeamColorCombo.getSelectedItem());
-            
+                        
             boolean newGame = !match.isActive();
             
             match.setActive(true);
@@ -114,7 +120,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
             this.setVisible(false);
 
             ScoreboardFrame scoreboardFrame = windowManager.getScoreboardFrame();
-
+            
             scoreboardFrame.applyStyle();
             scoreboardFrame.refresh();
             scoreboardFrame.setVisible(true);
@@ -265,13 +271,6 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                     .add(layout.createSequentialGroup()
                         .add(jLabel11, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(cancelButton)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 15, Short.MAX_VALUE)
-                        .add(subtitlesCheck)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(okButton)
-                        .add(13, 13, 13))
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
                             .add(jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -321,7 +320,17 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel12, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(jSeparator1))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(layout.createSequentialGroup()
+                                .add(0, 0, Short.MAX_VALUE)
+                                .add(subtitlesCheck))
+                            .add(layout.createSequentialGroup()
+                                .add(cancelButton)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 149, Short.MAX_VALUE)
+                                .add(okButton)))
+                        .add(13, 13, 13))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -353,10 +362,11 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                     .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(leftTeamSayText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel9)
-                    .add(speakLeftButton))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(speakLeftButton)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(leftTeamSayText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jLabel9)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(leftTeamColorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -379,15 +389,14 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(rightTeamColorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel8))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(subtitlesCheck)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(okButton)
-                    .add(cancelButton)
-                    .add(subtitlesCheck))
+                    .add(cancelButton))
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void styleComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_styleComboItemStateChanged

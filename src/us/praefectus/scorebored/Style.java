@@ -20,7 +20,7 @@ public class Style {
     private Color buttonHoverColor = Color.WHITE;
     private Color textBackgroundColor = Color.WHITE;
     private Color subtitleColor = Color.WHITE; 
-    private Font teamFont = new Font("Inconsolata", Font.BOLD, 75);
+    private Font teamFont = new Font("Inconsolata", Font.BOLD, 125);
     private Font scoreFont = new Font("Inconsolata", Font.BOLD, 450);
     private long subtitleFadeTime = 1000;
     
@@ -34,7 +34,8 @@ public class Style {
         LED.buttonTextColor = Color.LIGHT_GRAY; 
         LED.buttonHoverColor = Color.YELLOW;
         LED.subtitleColor = Color.WHITE;
-        LED.scoreFont = new Font("DS-Digital", Font.PLAIN, 550);
+        LED.teamFont = new Font("Inconsolata", Font.BOLD, 125);
+        LED.scoreFont = new Font("DS-Digital", Font.PLAIN, 525);
         LED.teamColors = Collections.unmodifiableList(Arrays.asList(
                 TeamColor.LED_RED, 
                 TeamColor.LED_CYAN,
