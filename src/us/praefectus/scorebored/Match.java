@@ -259,11 +259,11 @@ public class Match {
             if (ofers == 1) {
                 commentary.next("Ofer!", "Oh fer!");
             } else if (ofers == 2) {
-                commentary.next("Kenfer!", "Ken-fer!");
+                commentary.next("Kenfer!", "Kenfer!");
             } else if (ofers == 3) {
                 commentary.next("Turkey!");
             } else if (ofers == 4) {
-                commentary.next("Double Kenfer!", "Double Ken-fer!");
+                commentary.next("Double Kenfer!", "Double Kenfer!");
             }
         }
         if (gameLength == GameLength.ELEVEN) {
