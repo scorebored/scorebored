@@ -209,7 +209,7 @@ public class Match {
                                .next("Losers serve first");
                 }
                 if(loser.getScore() == 0) {
-                    commentary.next("Perfect game!");
+                    commentary.next("Perfect game!", "Perfect, game!");
                 } else if(loser.getScore() <= 12 && gameLength == GameLength.TWENTY_ONE) {
                     commentary.next("Sorry ").add(loser.getName())
                               .add(", Jacob is not impressed!");
