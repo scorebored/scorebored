@@ -210,7 +210,7 @@ public class Match {
                 }
                 if(loser.getScore() == 0) {
                     commentary.next("Perfect game!");
-                } else if(loser.getScore() <= 12) {
+                } else if(loser.getScore() <= 12 && gameLength == GameLength.TWENTY_ONE) {
                     commentary.next("Sorry ").add(loser.getName())
                               .add(", Jacob is not impressed!");
                 }              
