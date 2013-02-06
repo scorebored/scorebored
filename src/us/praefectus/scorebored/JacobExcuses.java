@@ -1,11 +1,22 @@
 package us.praefectus.scorebored;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 /**
  *
  * @author ken
  */
 public class JacobExcuses {
-    
+    private static final String textFile = "./JacobExcusesText.txt";
+    public File current;
+    private ArrayList<String> jacobExcuseList;
     private static final String[] jacobList = new String[] {
         "I am over trained.",
         "Did that nick?",
@@ -22,9 +33,64 @@ public class JacobExcuses {
         "Was that interference?"
     };
     
-    public String getJacobExcuse() {
-        int randomNumber = (int)(Math.random() * (jacobList.length));
-        return jacobList[randomNumber];
+    public JacobExcuses() {
+        current = new File(textFile);
+        jacobExcuseList = new ArrayList<String>();
+        try{
+            BufferedReader in = new BufferedReader(new FileReader(textFile));
+            while(in.ready()) {
+                jacobExcuseList.add(in.readLine());
+            }
+            in.close();
+        }
+        catch(Exception e) {
+            System.err.println("Jacob Excuses Constructor error:" + e.toString());
+        }       
     }
+    
+    public String getJacobExcuse() {
+        int randomNumber = (int)(Math.random() * (jacobExcuseList.size()));
+        return jacobExcuseList.get(randomNumber);
+    }
+    
+    public ArrayList<String> getJacobExcuseList() {
+        return jacobExcuseList;
+    }
+    
+    public void removeExcuse(String removeExcuse, int index) {       
+        try {
+            File tmp = File.createTempFile("tmp","");            
+            BufferedReader in  = new BufferedReader(new FileReader(current));
+            PrintWriter outTmp = new PrintWriter(new FileWriter(tmp, true));
 
+            while(in.ready()) {
+                String currentExcuse = in.readLine();              
+                if(removeExcuse.equals(currentExcuse)) {
+                    continue;
+                }
+                else {
+                    outTmp.println(currentExcuse);
+                }
+            }           
+            in.close();
+            outTmp.close();            
+            jacobExcuseList.remove(index);                     
+            tmp.renameTo(current);       
+        }
+        catch(Exception e) {
+            System.err.println("Jacob Excuses removeExcuse error:" + e.toString());
+        } 
+    }
+    
+    public void addExcuse(String newExcuse) {
+        try {
+            PrintWriter pw = new PrintWriter(new FileWriter(current, true));
+            pw.println(newExcuse);
+            jacobExcuseList.add(newExcuse);
+            pw.close();
+        }
+        catch(Exception e) {
+            System.err.print("Error writing to file: " + e.toString());          
+        }
+    }
 }

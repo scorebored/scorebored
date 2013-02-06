@@ -114,10 +114,6 @@ public class Main {
             TalkerFrame talkerFrame = new TalkerFrame(talker);
             Swing.centerOnScreen(talkerFrame);
             windowManager.register(talkerFrame);
-            
-            JacobExcusesFrame jacobExcusesFrame = new JacobExcusesFrame();
-            Swing.centerOnScreen(jacobExcusesFrame);
-            windowManager.register(jacobExcusesFrame);
 
             Swing.centerOnScreen(dashboardFrame);
             dashboardFrame.setVisible(true);

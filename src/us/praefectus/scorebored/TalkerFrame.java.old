@@ -62,11 +62,6 @@ public class TalkerFrame extends javax.swing.JFrame {
                 voiceComboItemStateChanged(evt);
             }
         });
-        voiceCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                voiceComboActionPerformed(evt);
-            }
-        });
 
         talkText.setText("Speech Text");
         talkText.addActionListener(new java.awt.event.ActionListener() {
@@ -142,10 +137,6 @@ public class TalkerFrame extends javax.swing.JFrame {
     private void silenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_silenceButtonActionPerformed
         talker.silence();
     }//GEN-LAST:event_silenceButtonActionPerformed
-
-    private void voiceComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voiceComboActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_voiceComboActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
