@@ -159,12 +159,7 @@ public class DashboardFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resetMatchButtonActionPerformed
 
     private void jacobExcuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jacobExcuseButtonActionPerformed
-        try{
-            windowManager.getJacobExcusesFrame().setVisible(true);
-        }
-        catch(Exception e) {
-            System.err.println("JacobExcuseERROR: " + e.toString());
-        }
+        windowManager.getJacobExcusesFrame().setVisible(true);
     }//GEN-LAST:event_jacobExcuseButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

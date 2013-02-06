@@ -7,7 +7,6 @@ package us.praefectus.scorebored.swing;
 import us.praefectus.scorebored.DashboardFrame;
 import us.praefectus.scorebored.ScoreboardFrame;
 import us.praefectus.scorebored.TalkerFrame;
-import us.praefectus.scorebored.JacobExcusesFrame;
 
 /**
  *
@@ -20,7 +19,6 @@ public class WindowManager {
     private DashboardFrame dashboardFrame = null;
     private ScoreboardFrame scoreboardFrame = null;
     private TalkerFrame talkerFrame = null;
-    private JacobExcusesFrame jacobExcusesFrame = null;
     
     private WindowManager() {
     }
@@ -52,14 +50,6 @@ public class WindowManager {
         }
         this.talkerFrame = talkerFrame;
     }   
-    
-    public void register(JacobExcusesFrame jacobExcusesFrame) {
-        if ( this.getJacobExcusesFrame() != null ) {
-            throw new IllegalArgumentException("JacobExcusesFrame already " + 
-                    "registered");
-        }
-        this.jacobExcusesFrame = jacobExcusesFrame;
-    } 
 
     /**
      * @return the dashboardFrame
@@ -82,10 +72,4 @@ public class WindowManager {
         return talkerFrame;
     }
     
-    /**
-     * @return the jacobExcuseFrame
-     */
-    public JacobExcusesFrame getJacobExcusesFrame() {
-        return jacobExcusesFrame;
-    }
 }
