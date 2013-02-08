@@ -1,9 +1,7 @@
 package us.praefectus.scorebored;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
  * @author ken
  */
 public class JacobExcuses {
-    private static final String textFile = "./JacobExcusesText.txt";
+    private static final String textFile = "/JacobExcusesText.txt";
     public File current;
     private ArrayList<String> jacobExcuseList;
     private static final String[] jacobList = new String[] {
@@ -34,17 +32,28 @@ public class JacobExcuses {
     };
     
     public JacobExcuses() {
-        current = new File(textFile);
-        jacobExcuseList = new ArrayList<String>();
-        try{
-            BufferedReader in = new BufferedReader(new FileReader(textFile));
+        String userHome = System.getProperty("user.home");
+        current = new File(userHome + "/.pong-scorebored", textFile);
+        try {      
+            if(!current.isFile()) {          
+                current.getParentFile().mkdirs();
+                current.createNewFile();
+                PrintWriter pw = new PrintWriter(new FileWriter(current, true));
+                for(String s : jacobList) {
+                    pw.println(s);
+                }
+                pw.close();                     
+            }
+            jacobExcuseList = new ArrayList<String>();
+
+            BufferedReader in = new BufferedReader(new FileReader(current));
             while(in.ready()) {
                 jacobExcuseList.add(in.readLine());
             }
             in.close();
         }
         catch(Exception e) {
-            System.err.println("Jacob Excuses Constructor error:" + e.toString());
+            System.err.println("Jacob Excuses Constructor error: " + e.toString());
         }       
     }
     
