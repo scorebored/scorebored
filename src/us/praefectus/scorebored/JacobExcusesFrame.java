@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 public class JacobExcusesFrame extends javax.swing.JFrame {
     
     private JacobExcuses jacobExcuses;
-    private String defaultExcuse = "Enter Excuse";    
+    private String defaultExcuse = "Select excuse to edit or enter new excuse";    
     public JacobExcusesFrame() {
         jacobExcuses = new JacobExcuses();
       
@@ -32,30 +32,11 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        addExcuseText = new javax.swing.JTextField();
-        addExcuseButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         excuseList = new javax.swing.JList();
         editText = new javax.swing.JTextField();
         deleteExcuse = new javax.swing.JButton();
         saveExcuse = new javax.swing.JButton();
-
-        addExcuseText.setText("Enter Excuse");
-        addExcuseText.setToolTipText("null");
-        addExcuseText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        addExcuseText.setName("null"); // NOI18N
-        addExcuseText.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                removeDefaultText(evt);
-            }
-        });
-
-        addExcuseButton.setText("Add Excuse");
-        addExcuseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addExcuseButtonActionPerformed(evt);
-            }
-        });
 
         excuseList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -70,10 +51,15 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(excuseList);
 
-        editText.setText("Select excuse to edit");
+        editText.setText("Select excuse to edit or enter new excuse");
         editText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editTextActionPerformed(evt);
+            }
+        });
+        editText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                removeDefault(evt);
             }
         });
 
@@ -89,7 +75,7 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
             }
         });
 
-        saveExcuse.setText("Save Edit");
+        saveExcuse.setText("Add Excuse");
         saveExcuse.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saveExcuse(evt);
@@ -108,24 +94,16 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
                         .add(deleteExcuse)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(saveExcuse)
-                        .add(0, 85, Short.MAX_VALUE))
+                        .add(0, 68, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, editText)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(addExcuseText)
-                        .add(26, 26, 26)
-                        .add(addExcuseButton)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1))
                 .add(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(14, 14, 14)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(addExcuseText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(addExcuseButton))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(16, 16, 16)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 186, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(editText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 30, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -138,22 +116,12 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addExcuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExcuseButtonActionPerformed
-        String addText = addExcuseText.getText();
-        if(!addText.equals(defaultExcuse))
-        {
-            jacobExcuses.addExcuse(addText);
-            this.resetModel();
-            addExcuseText.setText(defaultExcuse);
-        }
-    }//GEN-LAST:event_addExcuseButtonActionPerformed
-
     private void setExcusesText(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_setExcusesText
         if(excuseList.getSelectedValue() != null) {
             editText.setText(excuseList.getSelectedValue().toString());
         }
         else {
-           editText.setText("Select excuse to edit"); 
+           editText.setText(defaultExcuse); 
         }      
     }//GEN-LAST:event_setExcusesText
 
@@ -163,19 +131,16 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
 
     private void saveExcuse(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveExcuse
         int removeIndex = excuseList.getSelectedIndex();     
-        if(removeIndex >= 0) {
-            String newExcuse = editText.getText();
-            jacobExcuses.removeExcuse(excuseList.getSelectedValue().toString(), removeIndex);
-            jacobExcuses.addExcuse(newExcuse);
+        if(removeIndex >= 0 || !editText.getText().equals(defaultExcuse)) {
+            String newExcuse = editText.getText();             
+            //jacobExcuses.removeExcuse(excuseList.getSelectedValue().toString(), removeIndex);
+            Boolean check = jacobExcuses.addExcuse(newExcuse); 
             this.resetModel();
-        }
+            if(check){
+                JOptionPane.showMessageDialog(null, "This Awesome excuse already exists.");
+            }
+        }     
     }//GEN-LAST:event_saveExcuse
-
-    private void removeDefaultText(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_removeDefaultText
-        if(addExcuseText.getText().equals("Enter Excuse")) {
-            addExcuseText.selectAll();
-        }
-    }//GEN-LAST:event_removeDefaultText
 
     private void deleteExcuse(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteExcuse
         int deleteIndex = excuseList.getSelectedIndex();
@@ -185,8 +150,11 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
             int result = JOptionPane.showConfirmDialog(null, "Are you sure you wish "
                     + "to delete this Fantastic Excuse??", "Warning", dialogButton);
             if(result == JOptionPane.YES_OPTION) {
-                jacobExcuses.removeExcuse(dltExcuse, deleteIndex);
+                Boolean successful = jacobExcuses.removeExcuse(dltExcuse, deleteIndex);
                 this.resetModel();
+                if(successful){
+                    JOptionPane.showMessageDialog(null, "Deleted Successfully");
+                }
             }
         }       
     }//GEN-LAST:event_deleteExcuse
@@ -195,9 +163,13 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteExcuseActionPerformed
 
+    private void removeDefault(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_removeDefault
+        if(editText.getText().equals(defaultExcuse)) {
+           editText.selectAll(); 
+        }      
+    }//GEN-LAST:event_removeDefault
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addExcuseButton;
-    private javax.swing.JTextField addExcuseText;
     private javax.swing.JButton deleteExcuse;
     private javax.swing.JTextField editText;
     private javax.swing.JList excuseList;

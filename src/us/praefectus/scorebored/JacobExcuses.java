@@ -35,7 +35,7 @@ public class JacobExcuses {
         String userHome = System.getProperty("user.home");
         current = new File(userHome + "/.pong-scorebored", textFile);
         try {      
-            if(!current.isFile()) {          
+            if(!current.isFile()) {
                 current.getParentFile().mkdirs();
                 current.createNewFile();
                 PrintWriter pw = new PrintWriter(new FileWriter(current, true));
@@ -66,7 +66,8 @@ public class JacobExcuses {
         return jacobExcuseList;
     }
     
-    public void removeExcuse(String removeExcuse, int index) {       
+    public Boolean removeExcuse(String removeExcuse, int index) {
+        Boolean deleteSuccess = false;
         try {
             File tmp = File.createTempFile("tmp","");            
             BufferedReader in  = new BufferedReader(new FileReader(current));
@@ -75,6 +76,7 @@ public class JacobExcuses {
             while(in.ready()) {
                 String currentExcuse = in.readLine();              
                 if(removeExcuse.equals(currentExcuse)) {
+                    deleteSuccess = true;
                     continue;
                 }
                 else {
@@ -82,16 +84,24 @@ public class JacobExcuses {
                 }
             }           
             in.close();
-            outTmp.close();            
-            jacobExcuseList.remove(index);                     
+            outTmp.close();          
+            jacobExcuseList.remove(index);                 
             tmp.renameTo(current);       
         }
         catch(Exception e) {
             System.err.println("Jacob Excuses removeExcuse error:" + e.toString());
-        } 
+        }
+        return deleteSuccess;
     }
     
-    public void addExcuse(String newExcuse) {
+    public Boolean addExcuse(String newExcuse) {
+        Boolean checkExists = false;
+        //check if it exists already
+        for(String s : jacobExcuseList) {
+            if(s.equals(newExcuse)) {
+                return true;
+            }
+        }      
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(current, true));
             pw.println(newExcuse);
@@ -101,5 +111,6 @@ public class JacobExcuses {
         catch(Exception e) {
             System.err.print("Error writing to file: " + e.toString());          
         }
+        return checkExists;
     }
 }
