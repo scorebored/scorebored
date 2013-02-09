@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -37,8 +38,12 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     private boolean keyBindingsEnabled = false;
     private Font teamNameFont;
     private Font scoreFont; 
+    private JacobExcuses excuses;
     
     public ScoreboardFrame(final Match match) {
+        
+        excuses = JacobExcuses.getInstance();
+        
         this.match = match;
         this.talker = match.getTalker();
         if ( graphicsEnvironment.getDefaultScreenDevice().isFullScreenSupported() ) {
@@ -419,8 +424,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
     }
 
     private void jacobExcuse() {
-       JacobExcuses excuses = new JacobExcuses();
-       talker.say(excuses.getJacobExcuse());
+       talker.say(excuses.getRandom());
     }
     
     private void toggleMute() {

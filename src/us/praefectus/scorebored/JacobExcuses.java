@@ -1,21 +1,37 @@
 package us.praefectus.scorebored;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import org.apache.log4j.Logger;
+import us.praefectus.scorebored.swing.Swing;
+import us.praefectus.scorebored.util.IO;
 
 /**
  *
  * @author ken
  */
-public class JacobExcuses {
-    private static final String textFile = "/JacobExcusesText.txt";
-    public File current;
-    private ArrayList<String> jacobExcuseList;
-    private static final String[] jacobList = new String[] {
+public final class JacobExcuses {
+   
+    private static final Logger logger = Logger.getLogger(JacobExcuses.class);
+    private static JacobExcuses instance = null;
+    
+    private static final File excuseFile = new File(Scorebored.CONFIG_DIR, 
+            "JacobExcuses.txt");
+    private static final File tempFile = new File(Scorebored.CONFIG_DIR, 
+            "JacobExcuses.tmp");
+    
+    private SortedSet<String> jacobExcuses = new TreeSet<String>();
+    private static final String[] DEFAULT_JACOB_LIST = new String[] {
         "I am over trained.",
         "Did that nick?",
         "Your shirt is white or orange, cant see the ball when its in front of your shirt.",
@@ -31,86 +47,94 @@ public class JacobExcuses {
         "Was that interference?"
     };
     
-    public JacobExcuses() {
-        String userHome = System.getProperty("user.home");
-        current = new File(userHome + "/.pong-scorebored", textFile);
-        try {      
-            if(!current.isFile()) {
-                current.getParentFile().mkdirs();
-                current.createNewFile();
-                PrintWriter pw = new PrintWriter(new FileWriter(current, true));
-                for(String s : jacobList) {
-                    pw.println(s);
-                }
-                pw.close();                     
+    public static JacobExcuses getInstance() {
+        if ( instance == null ) {
+            instance = new JacobExcuses();
+            try {
+                instance.load();
+            } catch ( IOException ie ) {
+                Swing.showError("Unable to load Jacob excuses, using defaults", ie);
             }
-            jacobExcuseList = new ArrayList<String>();
+        }
+        return instance;
+    }
+    
+    private JacobExcuses() {
+    }
+        
+    public String getRandom() {
+        int randomNumber = (int)(Math.random() * (jacobExcuses.size()));
+        return getList().get(randomNumber);
+    }
+    
+    public List<String> getList() {
+        return Collections.unmodifiableList(new ArrayList(jacobExcuses));
+    }
+    
+    public void load() throws IOException {
+        if(!excuseFile.isFile()) {
+            logger.info("Using default Jacob excuses");
+            jacobExcuses.addAll(Arrays.asList(DEFAULT_JACOB_LIST));
+        } else {
+            logger.info("Loading Jacob excuse file: " + excuseFile);        
+            BufferedReader in = null;
 
-            BufferedReader in = new BufferedReader(new FileReader(current));
-            while(in.ready()) {
-                jacobExcuseList.add(in.readLine());
+            jacobExcuses.clear();
+            try {
+                in = new BufferedReader(new FileReader(excuseFile));
+                String line;
+                while ( (line = in.readLine()) != null ) {
+                    jacobExcuses.add(line);
+                }
+                in.close();
+            } finally {
+                IO.release(in);
             }
-            in.close();
         }
-        catch(Exception e) {
-            System.err.println("Jacob Excuses Constructor error: " + e.toString());
-        }       
     }
     
-    public String getJacobExcuse() {
-        int randomNumber = (int)(Math.random() * (jacobExcuseList.size()));
-        return jacobExcuseList.get(randomNumber);
-    }
-    
-    public ArrayList<String> getJacobExcuseList() {
-        return jacobExcuseList;
-    }
-    
-    public Boolean removeExcuse(String removeExcuse, int index) {
-        Boolean deleteSuccess = false;
+    public void save() throws IOException {
+        BufferedWriter out = null;
+        
+        logger.info("Saving Jacob excuses");
+        
         try {
-            File tmp = File.createTempFile("tmp","");            
-            BufferedReader in  = new BufferedReader(new FileReader(current));
-            PrintWriter outTmp = new PrintWriter(new FileWriter(tmp, true));
+            Scorebored.CONFIG_DIR.mkdirs();
+            out = new BufferedWriter(new FileWriter(tempFile));
 
-            while(in.ready()) {
-                String currentExcuse = in.readLine();              
-                if(removeExcuse.equals(currentExcuse)) {
-                    deleteSuccess = true;
-                    continue;
-                }
-                else {
-                    outTmp.println(currentExcuse);
-                }
-            }           
-            in.close();
-            outTmp.close();          
-            jacobExcuseList.remove(index);                 
-            tmp.renameTo(current);       
+            for ( String excuse: jacobExcuses ) {
+                out.write(excuse + "\n");
+            }
+            out.close();          
+            tempFile.renameTo(excuseFile); 
+        } finally { 
+            IO.release(out);
+            if ( tempFile.exists() ) { 
+                tempFile.delete();
+            }
         }
-        catch(Exception e) {
-            System.err.println("Jacob Excuses removeExcuse error:" + e.toString());
-        }
-        return deleteSuccess;
     }
     
-    public Boolean addExcuse(String newExcuse) {
-        Boolean checkExists = false;
-        //check if it exists already
-        for(String s : jacobExcuseList) {
-            if(s.equals(newExcuse)) {
-                return true;
-            }
-        }      
-        try {
-            PrintWriter pw = new PrintWriter(new FileWriter(current, true));
-            pw.println(newExcuse);
-            jacobExcuseList.add(newExcuse);
-            pw.close();
+    public boolean remove(String removeExcuse) {
+        boolean result = jacobExcuses.remove(removeExcuse);
+        if ( jacobExcuses.isEmpty() ) {
+            add("Jacob is not impressed!");
         }
-        catch(Exception e) {
-            System.err.print("Error writing to file: " + e.toString());          
-        }
-        return checkExists;
+        return result;
     }
+    
+    public boolean add(String newExcuse) {
+        return jacobExcuses.add(newExcuse);
+    }
+    
+    public boolean modify(String oldExcuse, String newExcuse) {
+        if ( jacobExcuses.contains(newExcuse) ) {
+            return false;
+        }
+        jacobExcuses.remove(oldExcuse);
+        jacobExcuses.add(newExcuse);
+        return true;
+    }
+    
+    
 }

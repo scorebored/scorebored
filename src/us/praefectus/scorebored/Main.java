@@ -87,7 +87,7 @@ public class Main {
         }.execute();
     }
     
-    public void startDashBoard() {
+    public void startDashBoard() {        
         FontLoader fontLoader = new FontLoader();
         for ( FontResource font: fonts ) { 
             try {
@@ -115,7 +115,7 @@ public class Main {
             Swing.centerOnScreen(talkerFrame);
             windowManager.register(talkerFrame);
             
-            JacobExcusesFrame jacobExcusesFrame = new JacobExcusesFrame();
+            JacobExcusesFrame jacobExcusesFrame = new JacobExcusesFrame(talker);
             Swing.centerOnScreen(jacobExcusesFrame);
             windowManager.register(jacobExcusesFrame);
 

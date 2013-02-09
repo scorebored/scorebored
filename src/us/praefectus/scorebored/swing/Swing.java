@@ -27,6 +27,11 @@ public class Swing {
         w.setBounds(0, 0, mode.getWidth(), mode.getHeight());
     }
     
+    public static void showNotice(String message) {
+        JOptionPane.showMessageDialog(null, message, "Notice", 
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     public static void showWarning(String message) { 
         JOptionPane.showMessageDialog(null, message, "Warning", 
                 JOptionPane.WARNING_MESSAGE);
