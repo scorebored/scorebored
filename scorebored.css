@@ -1,0 +1,171 @@
+html {
+}
+
+body { 
+    overflow-y: scroll;
+    background: #404040;
+    padding: 20px;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 10pt;
+}    
+    
+#title {
+    overflow: hidden;
+    padding: 10px;
+    height: 120px;
+    display: block;
+}
+
+#logo {
+    border-radius: 15px;
+    margin: 10px;
+    background: url(images/S2_ping_pong.png) no-repeat center center;
+    width: 150px;
+    height: 120px;
+    float: left;
+}
+
+#scorebored {
+    border-radius: 15px;
+    margin: 10px;
+    background-color: black;
+    background-image: url(images/scorebored.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 120px;
+    overflow: hidden;
+}
+
+#menu {
+    border-radius: 15px;
+    height: 30px;
+    line-height: 30px;
+    padding: 10px;
+    background: black;
+    margin: 20px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.menu-item {
+    color: #808080;
+    margin: 10px;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background-color: #ffff00;
+    color: black;
+}
+
+.menu-item-selected {
+    background-color: #444444;
+    color: white;
+}
+
+#download-button {
+    border-radius: 15px;
+    width: 200px;
+    padding: 10px;
+    margin: 20px auto 0;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+#download-subtitle {
+    text-align: center;
+    margin: 3px auto;
+    font-size: 8pt;
+    font-style: italic;
+}
+
+#content {
+    border-radius: 15px;
+    background: black;
+    color: #dddddd;    
+    overflow: hidden;
+    margin: 20px;
+    padding: 10px;    
+    display: block;
+}
+
+.pages {
+    padding: 20px;
+    display: none;
+}
+
+.review-block {
+    min-height: 162px;
+    margin-bottom: 20px;
+}
+
+.review-image {
+    border: 2px solid #404040;
+    float: left;
+    width: 300px;
+    height: 162px;
+}
+
+.review-text {
+    vertical-align: top;
+    padding-left: 320px;
+}
+
+.review-sig {
+    text-align: right;
+    font-style: italic;
+}
+
+#screenshot-selector {
+    float: left;
+}
+
+.screenshot {
+    text-align: center;
+    display: none;
+}
+
+.screenshot-item {
+    list-style: none;
+    color: #808080;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: center;
+}
+
+.screenshot-item:hover {
+    background-color: #ffff00;
+    color: black;
+}
+
+.screenshot-item-selected {
+    background-color: #444444;
+    color: white;
+}
+
+.screenshot-image {
+    border: 1px solid #404040;
+}
+
+.key {
+    text-align: center;
+}
+
+#key-shortcuts {
+    border: 1px solid #404040;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+#key-shortcuts td {
+    border: 1px solid #404040;
+    border-collapse: collapse;
+    padding: 5px 10px;
+}

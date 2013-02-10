@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Pong Scorebored</title>
+        
+        <link href="scorebored.css" rel="stylesheet" type="text/css">
+        <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+        <script src="js/scorebored.js" type="text/javascript"></script>
+    </head>
+    
+    <body>
+        <div id="title">
+            <div id="logo"></div>
+            <div id="scorebored"></div>
+        </div>
+        <div id="menu">
+            <a id="menu-about" class="menu-item">About</a>
+            <a id="menu-screenshots" class="menu-item">Screenshots</a>
+            <a id="menu-reviews" class="menu-item">Reviews</a>
+            <a id="menu-excuses" class="menu-item">Excuses</a>
+            <a id="menu-github" href="http://github.com/blackchip-org/pong-scorebored" target="github-pong-scorebored" class="menu-item">Source</a>
+        </div>
+        
+        <div id="content">
+            <div id="about" class="pages">
+                <div>
+                When programmers get bored, they write ping-pong scoring 
+                applications. Put that MacBook Pro to good use and keep score
+                for your co-workers as they battle it out for ping-pong glory!
+                Full with so many inside jokes, this application is guaranteed
+                to confuse everyone.
+                </div>
+                <a id="download-button" href="http://blackchip.org/Pong_Scorebored/Pong_Scorebored-1.1.0.zip">Download</a>
+                <div id="download-subtitle">
+                Mac OS X Application, Version 1.1.0
+                </div>
+                <h3>Rules</h3>
+                <p>
+                The Pong Scorebored implements the following rules:
+                <ul>
+                    <li>Games can be either 11 or 21 points in length.</li>
+                    <li>Matches can be a single game, best two out of three,
+                        best three out of five, or best four out of seven.</li>
+                    <li>Rally scoring is in effect.</li>
+                    <li>There is a volley for service in the first game of a
+                        match.</li>
+                    <li>In subsequent match games, the loser of the previous
+                        game serves first.</li>
+                    <li>In 21 point games, servers change after every 5 points.</li>
+                    <li>In 11 point games, servers change after every 2 points.</li>
+                    <li>A win must be by at least 2 points.</li>
+                    <li>In overtime servers change after every point.</li>
+                    <li>In 21 point games:
+                        <ul>
+                        <li>Winning all 5 points in a service is an Ofer</li>
+                        <li>Two consecutive Ofers is a Kenfer</li>
+                        <li>Three consecutive Ofers is a Turkey</li>
+                        <li>Four consecutive Ofers is a Double Kenfer</li>
+                        </ul>
+                    </li>
+                    <li>In 12 point games an Ofer is awarded for winning both
+                        points in two consecutive services</li>
+                    <li>In a 21 point game, Jacob is not impressed if you lose 
+                        with 12 points or less.</li>
+                </ul>
+                <h3>Guide</h3>
+                <p>
+                When a match starts in the Scorebored screen, press the Left
+                Arrow to award the service to the left team or press the
+                Right Arrow to award the service to the right team.
+                </p>
+                
+                <p>
+                During play, use the buttons at the bottom right hand of the
+                screen or the following key shortcuts: 
+                </p>
+                <div>
+                    <table id="key-shortcuts">
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td class="key">Left Arrow</td>
+                            <td>Award a point to the left team</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Right Arrow</td>
+                            <td>Award a point to the right team</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Shift Left Arrow</td>
+                            <td>Subtract a point from the left team</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Shift Right Arrow</td>
+                            <td>Subtract a point from the right team</td>
+                        </tr>
+                        <tr>
+                            <td class="key">Y</td>
+                            <td>
+                                When the ball dribbles over the net, press
+                                to say "Yeah Baby!"
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="key">O</td>
+                            <td>
+                                When the net rejects the ball, press to
+                                say "No Baby!"
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="key">H</td>
+                            <td>When the ball nicks the side of the table, press
+                                to say "Ssssssssssh!"
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="key">N</td>
+                            <td>On a serve that hits the net, press to say
+                                "Nothing but net!"
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="key">S</td>
+                            <td>Announces the score</td>
+                        </tr>
+                        <tr>
+                            <td class="key">V</td>
+                            <td>Announces who is serving</td>
+                        </tr>
+                        <tr>
+                            <td class="key">E</td>
+                            <td>Emit a random Jacob excuse</td>
+                        </tr>
+                        <tr>
+                            <td class="key">T</td>
+                            <td>Adjust the match settings</td>
+                        </tr>
+                        <tr>
+                            <td class="key">A</td>
+                            <td>Adjust the score or server</td>
+                        </tr>
+                        <tr>
+                            <td class="key">M</td>
+                            <td>Mute the announcer</td>
+                        </tr>
+                    </table>
+                    <p>
+                    At the end of the match, press either the left or right
+                    arrow key to return to the dashboard.
+                    </p>
+                    <h3>Jesters of Tomfoolery</h3>
+                    <p>
+                    The Pong Scoreboard is brought to you by "Whirlwind" Ken
+                    and "T-Rex" McG.
+                    </p>
+                    <p>
+                    (K) 2012-2013. All rites reversed.
+                    </p>
+                </div>
+            </div>
+            <div id="screenshots" class="pages">
+                <div id="screenshot-selector">
+                    <ul>
+                        <li id="menu-dashboard" class="screenshot-item">Dashboard</li>
+                        <li id="menu-match-settings" class="screenshot-item">Match Settings</li>
+                        <li id="menu-score" class="screenshot-item">Scorebored</li>
+                        <li id="menu-commentator" class="screenshot-item">Commentator</li>
+                        <li id="menu-excuses-screenshot" class="screenshot-item">Jacob Excuses</li>
+                    </ul>
+                </div>
+                <div id="dashboard" class="screenshot">
+                    <img src="images/dashboard.png">
+                </div>
+                <div id="match-settings" class="screenshot">
+                    <img src="images/match_settings.png">
+                </div>
+                <div id="score" class="screenshot">
+                    <img class="screenshot-image" src="images/score.png">
+                </div>
+                <div id="commentator" class="screenshot">
+                    <img src="images/commentator.png">
+                </div>                
+                <div id="excuses-screenshot" class="screenshot">
+                    <img src="images/excuses.png">
+                </div>  
+            </div>
+            <div id="reviews" class="pages">
+                <div class="review-block">
+                    <img class="review-image"src="images/gordon.jpg">
+                    <p class="review-text">
+                    When I get my new computer, the first application
+                    I'm installing is the Pong Scorebored!
+                    </p>
+                    <p class="review-sig">
+                    - Jeff G.    
+                    </p>
+                    <p class="review-text">
+                    I travel all they way from Aberdeen to Baltimore just to
+                    play in ping pong matches that feature the Scorebored! And
+                    because it is the only place in the area to play. The free
+                    pizza helps too.
+                    </p>
+                    <p class="review-sig">
+                    - Tim G.
+                    </p>
+                </div>
+                <div class="review-block">
+                    <img class="review-image" src="images/jacob.jpg">
+                    <p class="review-text">
+                    I am the champion. The one and only champion. This 
+                    application sometime announces a winner that is not me. 
+                    This is obviously a major bug in the software. Because of 
+                    that, I rate this a 10 out of 21. That is below the 
+                    Jacobian line. I am not impressed.
+                    </p>
+                    <p class="review-sig">
+                    - Jacob I.    
+                    </p>
+                </div>
+                   
+            </div>
+            <div id="excuses" class="pages">
+                The Pong Scorebored comes preloaded with all of your favorite
+                Jacob excuses. Listen to them over and over again by clicking
+                on the "Excuses" button or by pressing "E". Here are some
+                of your favorites that are available:
+                <ul>
+                    <li>Your shirt is white or orange, can't see the ball when 
+                        its in front of your shirt.</li>
+                    <li>My back hurts.</li>
+                    <li>I let him win.</li>
+                    <li>The lighting was bad.</li>
+                    <li>I thought he was Jeff.</li>
+                    <li>I was practicing my swing and was not playing 
+                        serious.</li>
+                    <li>My wrist hurts.</li>
+                    <li>It is Tuesday.</li>
+                </ul>
+                Download now within the next 60 minutes and get the free 
+                expansion pack that includes the following:
+                <ul>
+                    <li>These balls are too big.</li>
+                    <li>I was blowing my thing.</li>
+                </ul>
+            </div>
+        </div>
+    </body>
+
+</html>
