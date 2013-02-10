@@ -11,8 +11,10 @@ project.
 
 To run from the command line, type in:
 
-> ant jar
-> java -jar dist/pong-scorebored.jar
+```
+ant jar
+java -jar dist/pong-scorebored.jar
+```
 
 A Mac OS X application is also created in the dist directory.
 
