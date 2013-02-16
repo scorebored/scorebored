@@ -4,6 +4,8 @@
  */
 package org.blackchip.scorebored;
 
+import java.awt.Color;
+
 /**
  *
  * @author ken
@@ -15,6 +17,7 @@ public class SplashScreen extends javax.swing.JFrame {
      */
     public SplashScreen() {            
         setUndecorated(true);
+        getContentPane().setBackground(Color.WHITE);
         setSize(400,400);
         initComponents();
         
@@ -38,10 +41,13 @@ public class SplashScreen extends javax.swing.JFrame {
         copyrightLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
 
+        nameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("Name");
 
+        versionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         versionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         versionLabel.setText("Version");
 
@@ -75,7 +81,7 @@ public class SplashScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
