@@ -57,7 +57,7 @@
         </copy>
         <copy todir="${basedir}/dist/Pong Scorebored.app/Contents/Resources/Java"
               flatten="true">
-            <fileset dir="${basedir}">
+            <fileset dir="${basedir}/dist">
                 <include name="**/*.jar"/>
                 <exclude name="Pong Scorebored.app/**"/>
             </fileset>

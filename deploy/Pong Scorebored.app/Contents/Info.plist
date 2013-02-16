@@ -25,13 +25,13 @@
 	<key>Java</key>
 	<dict>
 		<key>MainClass</key>
-		<string>us.praefectus.scorebored.Main</string>
+		<string>org.blackchip.scorebored.Main</string>
 		<key>JVMVersion</key>
 		<string>1.6+</string>
 		<key>ClassPath</key>
 			<array>
 			<string>$JAVAROOT/pong-scorebored.jar</string>
-			<string>$JAVAROOT/swing-layout-1.0.4.jar</string>
+			<string>$JAVAROOT/swing-layout-1.0.3.jar</string>
 			<string>$JAVAROOT/log4j-1.2.17.jar</string>
 			</array>
 	</dict>
