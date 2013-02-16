@@ -12,6 +12,8 @@
     <description>Builds, tests, and runs the project pong-scorebored.</description>
     <import file="nbproject/build-impl.xml"/>
     
+    <property name="version" value="1.2.0"/>
+    
     <property name="ivy.install.version" value="2.3.0"/>
     <property name="ivy.jar.dir" value="${basedir}/lib"/>
     <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar"/> 
@@ -50,7 +52,7 @@
                        pathid="lib.path.id" inline="true"/> 
     </target>
                 
-    <target name="-post-jar">
+    <target name="-osx-app">
         <delete dir="${basedir}/dist/Pong Scorebored.app"/>
         <copy todir="${basedir}/dist/Pong Scorebored.app">
             <fileset dir="${basedir}/deploy/Pong Scorebored.app"/>
@@ -65,8 +67,26 @@
         <exec executable="chmod">
             <arg value="555"/>
             <arg value="${basedir}/dist/Pong Scorebored.app/Contents/MacOS/JavaApplicationStub"/>
-        </exec>
+        </exec>        
     </target>
+    
+   <target name="-osx-dmg">
+     <exec dir="dist" executable="hdiutil">
+       <arg value="create"/>
+       <arg value="-ov"/> 
+       <arg value="-srcfolder"/>
+       <arg value="Pong Scorebored.app"/>
+       <arg value="Pong_Scorebored-${version}.dmg"/>
+     </exec>
+     <exec dir="dist" executable="hdiutil">
+       <arg value="internet-enable"/>
+       <arg value="-yes"/>
+       <arg value="Pong_Scorebored-${version}.dmg"/>
+     </exec>
+   </target>
+       
+    <target name="dist" depends="jar,-osx-app,-osx-dmg"/>
+    
         
     <!--
 
