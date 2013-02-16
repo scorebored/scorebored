@@ -1,0 +1,7 @@
+<ivysettings>
+    <settings defaultResolver="ibiblio"/>
+    <caches defaultCacheDir="${basedir}/lib"/>
+    <resolvers>
+        <ibiblio name="ibiblio" m2compatible="true"/>
+    </resolvers>
+</ivysettings>
