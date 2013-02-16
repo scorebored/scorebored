@@ -95,6 +95,10 @@ public abstract class AbstractTalker implements Talker {
      * thread is interrupted.
      */
     protected void muteSleep() throws InterruptedException {
-        Thread.sleep(muteWaitTime);
+        try {
+            Thread.sleep(muteWaitTime);
+        } catch ( InterruptedException ie ) {
+            //
+        }
     }
 }

@@ -2,6 +2,7 @@ package org.blackchip.scorebored;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import javax.swing.DefaultListModel;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import org.blackchip.scorebored.swing.Swing;
 import org.blackchip.scorebored.talker.SwingTalker;
@@ -13,12 +14,13 @@ public class JacobExcusesFrame extends javax.swing.JFrame {
     private String defaultExcuse = "Select excuse to edit or enter new excuse";    
     private static String LAME_EXCUSE = "Lame excuse";
      
-    public JacobExcusesFrame(SwingTalker talker) {
+    public JacobExcusesFrame(JMenuBar menu, SwingTalker talker) {
         this.talker = talker;
         this.jacobExcuses = JacobExcuses.getInstance();
         initComponents();
         this.resetModel();
         excuseList.setSelectedIndex(0);
+        this.setJMenuBar(menu);
     }
     
     private void resetModel() {

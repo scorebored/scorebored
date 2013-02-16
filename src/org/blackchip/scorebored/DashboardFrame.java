@@ -1,6 +1,7 @@
 package org.blackchip.scorebored;
 
 import javax.swing.JDialog;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import org.blackchip.scorebored.swing.Swing;
 import org.blackchip.scorebored.swing.WindowManager;
@@ -10,8 +11,9 @@ public class DashboardFrame extends javax.swing.JFrame {
     private Match match;
     private WindowManager windowManager = WindowManager.getInstance();
 
-    public DashboardFrame(Match match) {
+    public DashboardFrame(JMenuBar menu, Match match) {
         this.match = match;
+        this.setJMenuBar(menu);        
         initComponents();
         match.addListener(new MatchListener() {
             @Override
@@ -27,6 +29,7 @@ public class DashboardFrame extends javax.swing.JFrame {
             }
         });
         this.getRootPane().setDefaultButton(scoreboardButton);
+        this.setIconImage(Scorebored.getIconImage());
     }
     
     @SuppressWarnings("unchecked")

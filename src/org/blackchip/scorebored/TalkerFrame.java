@@ -1,6 +1,7 @@
 package org.blackchip.scorebored;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JMenuBar;
 import org.blackchip.scorebored.talker.Speech;
 import org.blackchip.scorebored.talker.TalkListener;
 import org.blackchip.scorebored.talker.SwingTalker;
@@ -12,7 +13,7 @@ public class TalkerFrame extends javax.swing.JFrame {
     
     private SwingTalker talker;
     
-    public TalkerFrame(SwingTalker talkService) {
+    public TalkerFrame(JMenuBar menu, SwingTalker talkService) {
         this.talker = talkService;
         initComponents();
         voiceCombo.setModel(new DefaultComboBoxModel(
@@ -33,6 +34,7 @@ public class TalkerFrame extends javax.swing.JFrame {
                 silenceButton.setEnabled(false);
             }
         });
+        this.setJMenuBar(menu);
     }
     
     private void talk() {

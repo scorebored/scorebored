@@ -164,9 +164,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="yeahBabyButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="rightServerText">
       <Properties>
@@ -257,9 +254,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="noBabyButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="shhButton">
       <Properties>
@@ -273,9 +267,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="shhButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="closeButton">
       <Properties>
@@ -304,9 +295,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excuseButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="talkText">
       <Properties>
@@ -335,9 +323,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settingsButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="muteButton">
       <Properties>
@@ -351,9 +336,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="muteButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="netButton">
       <Properties>
@@ -367,9 +349,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="netButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="scoreButton">
       <Properties>
@@ -383,9 +362,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="scoreButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="serverButton">
       <Properties>
@@ -399,9 +375,6 @@
         </Property>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="serverButtonActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

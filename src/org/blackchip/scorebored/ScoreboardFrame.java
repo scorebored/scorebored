@@ -1,6 +1,8 @@
 package org.blackchip.scorebored;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
@@ -95,6 +97,30 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                 applyStyle();
             }
         });
+        
+        yeahBabyButton.setAction(Actions.YEAH_BABY);
+        yeahBabyButton.setText("Yeah");
+        noBabyButton.setAction(Actions.NO_BABY);
+        noBabyButton.setText("No");
+        shhButton.setAction(Actions.SHH);
+        shhButton.setText("Shh");
+        netButton.setAction(Actions.NOTHING_BUT_NET);
+        netButton.setText("Net");
+        scoreButton.setAction(Actions.SCORE);
+        scoreButton.setText("Score");
+        serverButton.setAction(Actions.SERVER);
+        serverButton.setText("Server");
+        excuseButton.setAction(Actions.RANDOM_EXCUSE);
+        excuseButton.setText("Excuse");
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showSettingsDialog();
+            }
+        });
+        settingsButton.setText("Settings");
+        muteButton.setAction(Actions.MUTE);
+        muteButton.setText("Mute");
         
         pack();
         applyStyle();
@@ -237,24 +263,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         textField.setText(name);
     }
     
-    private void showAdjustmentDialog() {
-        setVisible(false);
-        JDialog dialog = new AdjustmentDialog(match);
-        Swing.centerOnScreen(dialog);
-        dialog.setVisible(true);
-        setVisible(true);
-        refresh();    
-    }
-    
-    private void showSettingsDialog() {
-        setVisible(false);
-        JDialog dialog = new MatchSettingsDialog(match);
-        Swing.centerOnScreen(dialog);
-        dialog.setVisible(true);
-        setVisible(true);
-        refresh();
-    }
-    
     private void advanceTeam(Team.Side side) {
         try {
             match.incrementTeamScore(side);
@@ -341,28 +349,28 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                         toggleMute();
                         return true;
                     case KeyEvent.VK_N:
-                        net();
+                        Actions.NOTHING_BUT_NET.actionPerformed(null);
                         return true;
                     case KeyEvent.VK_H:
-                        shh();
+                        Actions.SHH.actionPerformed(null);
                         return true;
                     case KeyEvent.VK_T:
                         showSettingsDialog();
                         return true;
                     case KeyEvent.VK_O:
-                        noBaby();
+                        Actions.NO_BABY.actionPerformed(null);
                         return true;
                     case KeyEvent.VK_Y:
-                        yeahBaby();
+                        Actions.YEAH_BABY.actionPerformed(null);
                         return true;
                      case KeyEvent.VK_E:
-                        jacobExcuse();
+                        Actions.RANDOM_EXCUSE.actionPerformed(null);
                         return true;
                      case KeyEvent.VK_S:
-                        score();
+                        Actions.SCORE.actionPerformed(null);
                         return true;
                      case KeyEvent.VK_V:
-                        server();
+                        Actions.SERVER.actionPerformed(null);
                         return true;
                      case KeyEvent.VK_SPACE:
                          enableKeyBindings(false);
@@ -396,39 +404,22 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         }    
     }
     
-    private void yeahBaby() { 
-        talker.say("Yeah Baby!");
+    private void showAdjustmentDialog() {
+        setVisible(false);
+        Actions.ADJUST_SCORE.actionPerformed(null);
+        setVisible(true);
+        refresh();
     }
     
-    private void noBaby() {
-        talker.say("No Baby!");
-    }
-    
-    private void shh() {
-        talker.say("Shh");
-    }
-    
-    private void net() {
-        talker.say("Nothing but Net!");
-    }
-
-    private void score() {
-        AnnounceScore announceScore = new AnnounceScore(match);
-        talker.say(announceScore.getScore());
-    }
-
-    private void server() {
-        talker.say(new Commentary()
-                .add(match.getTeam(match.getServer()).getName())
-                .add(" is serving"));
-    }
-
-    private void jacobExcuse() {
-       talker.say(excuses.getRandom());
+    private void showSettingsDialog() {
+        setVisible(false);
+        Actions.ADJUST_SETTINGS.actionPerformed(null);
+        setVisible(true);
+        refresh();
     }
     
     private void toggleMute() {
-        talker.toggleMute();
+        Actions.MUTE.actionPerformed(null);
         if ( talker.isMute() ) { 
             talker.silence();
             subtitle.setText("Sound Off");
@@ -502,11 +493,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         yeahBabyButton.setActionCommand("Yeah Baby");
         yeahBabyButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         yeahBabyButton.setOpaque(true);
-        yeahBabyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yeahBabyButtonActionPerformed(evt);
-            }
-        });
 
         rightServerText.setEditable(false);
         rightServerText.setFont(new java.awt.Font("Lucida Grande", 1, 48)); // NOI18N
@@ -548,22 +534,12 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         noBabyButton.setActionCommand("Yeah Baby");
         noBabyButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         noBabyButton.setOpaque(true);
-        noBabyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noBabyButtonActionPerformed(evt);
-            }
-        });
 
         shhButton.setMnemonic('H');
         shhButton.setText("Shh");
         shhButton.setActionCommand("Yeah Baby");
         shhButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         shhButton.setOpaque(true);
-        shhButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shhButtonActionPerformed(evt);
-            }
-        });
 
         closeButton.setText("Close");
         closeButton.setActionCommand("Yeah Baby");
@@ -580,11 +556,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         excuseButton.setActionCommand("Yeah Baby");
         excuseButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         excuseButton.setOpaque(true);
-        excuseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excuseButtonActionPerformed(evt);
-            }
-        });
 
         talkText.setText("Speech");
         talkText.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -607,55 +578,30 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         settingsButton.setActionCommand("Yeah Baby");
         settingsButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         settingsButton.setOpaque(true);
-        settingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settingsButtonActionPerformed(evt);
-            }
-        });
 
         muteButton.setMnemonic('M');
         muteButton.setText("Mute");
         muteButton.setActionCommand("Yeah Baby");
         muteButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         muteButton.setOpaque(true);
-        muteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                muteButtonActionPerformed(evt);
-            }
-        });
 
         netButton.setMnemonic('N');
         netButton.setText("Net");
         netButton.setActionCommand("Yeah Baby");
         netButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         netButton.setOpaque(true);
-        netButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                netButtonActionPerformed(evt);
-            }
-        });
 
         scoreButton.setMnemonic('S');
         scoreButton.setText("Score");
         scoreButton.setActionCommand("Yeah Baby");
         scoreButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         scoreButton.setOpaque(true);
-        scoreButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scoreButtonActionPerformed(evt);
-            }
-        });
 
         serverButton.setMnemonic('V');
         serverButton.setText("Server");
         serverButton.setActionCommand("Yeah Baby");
         serverButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         serverButton.setOpaque(true);
-        serverButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serverButtonActionPerformed(evt);
-            }
-        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -759,32 +705,12 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         enableKeyBindings(false);
     }//GEN-LAST:event_formWindowLostFocus
 
-    private void yeahBabyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yeahBabyButtonActionPerformed
-        yeahBaby();
-    }//GEN-LAST:event_yeahBabyButtonActionPerformed
-
-    private void noBabyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noBabyButtonActionPerformed
-        noBaby();
-    }//GEN-LAST:event_noBabyButtonActionPerformed
-
-    private void shhButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shhButtonActionPerformed
-        shh();
-    }//GEN-LAST:event_shhButtonActionPerformed
-
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice().setFullScreenWindow(null);
         this.setVisible(false);
         windowManager.getDashboardFrame().setVisible(true);
     }//GEN-LAST:event_closeButtonActionPerformed
-
-    private void excuseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excuseButtonActionPerformed
-        jacobExcuse();
-    }//GEN-LAST:event_excuseButtonActionPerformed
-
-    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        showSettingsDialog();
-    }//GEN-LAST:event_settingsButtonActionPerformed
 
     private void talkTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_talkTextFocusGained
         enableKeyBindings(false);
@@ -802,22 +728,6 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         talkText.setText("");
         this.requestFocusInWindow();
     }//GEN-LAST:event_talkTextActionPerformed
-
-    private void muteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muteButtonActionPerformed
-        toggleMute();
-    }//GEN-LAST:event_muteButtonActionPerformed
-
-    private void netButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_netButtonActionPerformed
-        net();
-    }//GEN-LAST:event_netButtonActionPerformed
-
-    private void scoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scoreButtonActionPerformed
-        score();
-    }//GEN-LAST:event_scoreButtonActionPerformed
-
-    private void serverButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverButtonActionPerformed
-        server();
-    }//GEN-LAST:event_serverButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

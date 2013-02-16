@@ -1,5 +1,6 @@
 package org.blackchip.scorebored;
 
+import com.apple.eawt.Application;
 import org.blackchip.scorebored.talker.MacTalker;
 import org.blackchip.scorebored.talker.MuteTalker;
 import org.blackchip.scorebored.talker.LinuxTalker;
@@ -8,6 +9,7 @@ import org.blackchip.scorebored.talker.TalkException;
 import org.blackchip.scorebored.talker.TalkerFactory;
 import org.blackchip.scorebored.talker.Talker;
 import java.awt.Font;
+import javax.swing.JMenuBar;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import org.apache.log4j.Logger;
@@ -73,24 +75,29 @@ public class Main {
     }
     
     public void application() {
-        final SplashScreen splashScreen = new SplashScreen();
-        Swing.centerOnScreen(splashScreen);
-        splashScreen.setVisible(true);
-        new SwingWorker<Object,Object>(){          
-            @Override
-            protected Object doInBackground() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ex) {                
+        if ( System.getProperty("scorebored.fast-start") == null ) {
+            final SplashScreen splashScreen = new SplashScreen();
+            Swing.centerOnScreen(splashScreen);
+            splashScreen.setVisible(true);
+            new SwingWorker<Object,Object>(){          
+                @Override
+                protected Object doInBackground() {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException ex) {                
+                    }
+                    return null;
                 }
-                return null;
-            }
-             @Override
-            protected void done() {
-                 splashScreen.setVisible(false);
-                 startDashBoard();
-            }
-        }.execute();
+                 @Override
+                protected void done() {
+                     splashScreen.setVisible(false);
+                     startDashBoard();
+                }
+            }.execute();
+        } else {
+            log.debug("Fast start requested. Not showing splash screen.");
+            startDashBoard();
+        }
     }
     
     public void startDashBoard() {        
@@ -109,26 +116,32 @@ public class Main {
             Match match = new Match(talkerFactory.newSwingTalker());
 
             WindowManager windowManager = WindowManager.getInstance();
-
-            DashboardFrame dashboardFrame = new DashboardFrame(match);
+            Actions.createActions(match);
+            
+            DashboardFrame dashboardFrame = 
+                    new DashboardFrame(new ApplicationMenu(match), match);
             windowManager.register(dashboardFrame);
             ScoreboardFrame scoreboardFrame = new ScoreboardFrame(match);
             windowManager.register(scoreboardFrame);
 
             SwingTalker talker = talkerFactory.newSwingTalker();
             
-            TalkerFrame talkerFrame = new TalkerFrame(talker);
+            TalkerFrame talkerFrame = 
+                    new TalkerFrame(new ApplicationMenu(match), talker);
             Swing.centerOnScreen(talkerFrame);
             windowManager.register(talkerFrame);
             
-            JacobExcusesFrame jacobExcusesFrame = new JacobExcusesFrame(talker);
+            JacobExcusesFrame jacobExcusesFrame = 
+                    new JacobExcusesFrame(new ApplicationMenu(match), talker);
             Swing.centerOnScreen(jacobExcusesFrame);
             windowManager.register(jacobExcusesFrame);
 
             Swing.centerOnScreen(dashboardFrame);
             dashboardFrame.setVisible(true);
             
-            talker.say("Shall we play a game?");
+            if ( System.getProperty("scorebored.fast-start") == null ) {
+                talker.say("Shall we play a game?");
+            }
             
             log.debug("Application started");
         } catch ( Exception e ) {
@@ -141,6 +154,11 @@ public class Main {
         log.debug("Application starting");
         
         try {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Pong Scorebored");
+            
+            Application.getApplication().setDockIconImage(Scorebored.getIconImage());
+                    
             if ( System.getProperty("os.name").contains("Linux") ) {
                 UIManager.setLookAndFeel(UIManager
                         .getCrossPlatformLookAndFeelClassName());
@@ -154,7 +172,7 @@ public class Main {
             } else {
                 UIManager.setLookAndFeel(UIManager
                         .getSystemLookAndFeelClassName());
-            }
+            }            
             log.debug("Look and feel: " + UIManager.getLookAndFeel().getName());
         } catch ( Exception e ) { 
             log.warn("Unable to set the look and feel: " + e.getMessage());
