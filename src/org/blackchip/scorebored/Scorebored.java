@@ -10,6 +10,12 @@ public class Scorebored {
     private static final ImageIcon icon = 
             new ImageIcon(Scorebored.class.getResource("/icons/paddle-transparent.png"));
     
+    public static final ImageIcon PADDLE_ICON = 
+            new ImageIcon(Scorebored.class.getResource("/icons/paddle.png"));
+
+    public static final ImageIcon GREEN_PONG_ICON = 
+            new ImageIcon(Scorebored.class.getResource("/icons/green_pong.png"));
+    
     private Scorebored() {
     }
     
