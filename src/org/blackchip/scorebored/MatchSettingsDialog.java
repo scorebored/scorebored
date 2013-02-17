@@ -59,7 +59,7 @@ public class MatchSettingsDialog extends javax.swing.JDialog {
 
         this.getRootPane().setDefaultButton(okButton);
         
-        this.setPreferredSize(new Dimension(350, 570));
+        this.setPreferredSize(new Dimension(350, 550));
         pack();
         
     }

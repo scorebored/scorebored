@@ -320,7 +320,7 @@ public class Actions {
     
     static class ExcuseEditorAction extends AbstractAction {
         public ExcuseEditorAction() {
-            super("Jacob Excuse Editor");
+            super("Excuses");
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
         }
 

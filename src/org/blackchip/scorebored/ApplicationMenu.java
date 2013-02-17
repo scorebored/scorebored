@@ -42,11 +42,13 @@ public class ApplicationMenu extends JMenuBar {
         menuCommentator.addSeparator();
         menuCommentator.add(new JMenuItem(Actions.CUSTOM_COMMENTARY));
         menuCommentator.add(new JMenuItem(Actions.MUTE));
+
+        JMenu menuSettings = new JMenu("Settings");
+        this.add(menuSettings);
+        menuSettings.add(new JMenuItem(Actions.EXCUSE_EDITOR));
         
         JMenu menuTools = new JMenu("Tools");
         this.add(menuTools);
-        
-        menuTools.add(new JMenuItem(Actions.EXCUSE_EDITOR));
         menuTools.add(new JMenuItem(Actions.CONSOLE));
     }
 
