@@ -330,6 +330,17 @@ public class Actions {
         }     
     };
     
+    static class ConsoleAction extends AbstractAction {
+        public ConsoleAction() {
+            super("Console");
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            windowManager.getConsoleFrame().setVisible(true);
+        }
+    };
+    
     public static Action NEW_MATCH;
     public static Action CONTINUE_MATCH;
     public static Action ADJUST_SETTINGS;
@@ -346,6 +357,8 @@ public class Actions {
     
     public static Action RANDOM_EXCUSE;
     public static Action EXCUSE_EDITOR;
+    
+    public static Action CONSOLE;
     
     public static void createActions(Match match) {
         NEW_MATCH = new NewMatchAction(match);
@@ -365,6 +378,7 @@ public class Actions {
         RANDOM_EXCUSE = new RandomExcuseAction(match.getTalker());
         
         EXCUSE_EDITOR = new ExcuseEditorAction();
+        CONSOLE = new ConsoleAction();
     }
     
 }

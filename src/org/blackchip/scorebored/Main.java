@@ -136,6 +136,9 @@ public class Main {
             Swing.centerOnScreen(jacobExcusesFrame);
             windowManager.register(jacobExcusesFrame);
 
+            ConsoleFrame consoleFrame = new ConsoleFrame(new ApplicationMenu(match));
+            windowManager.register(consoleFrame);
+            
             Swing.centerOnScreen(dashboardFrame);
             dashboardFrame.setVisible(true);
             

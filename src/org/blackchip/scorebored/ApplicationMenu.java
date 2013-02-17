@@ -47,6 +47,7 @@ public class ApplicationMenu extends JMenuBar {
         this.add(menuTools);
         
         menuTools.add(new JMenuItem(Actions.EXCUSE_EDITOR));
+        menuTools.add(new JMenuItem(Actions.CONSOLE));
     }
 
     

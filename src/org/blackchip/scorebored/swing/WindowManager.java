@@ -4,6 +4,7 @@
  */
 package org.blackchip.scorebored.swing;
 
+import org.blackchip.scorebored.ConsoleFrame;
 import org.blackchip.scorebored.DashboardFrame;
 import org.blackchip.scorebored.ScoreboardFrame;
 import org.blackchip.scorebored.TalkerFrame;
@@ -21,6 +22,7 @@ public class WindowManager {
     private ScoreboardFrame scoreboardFrame = null;
     private TalkerFrame talkerFrame = null;
     private JacobExcusesFrame jacobExcusesFrame = null;
+    private ConsoleFrame consoleFrame = null;
     
     private WindowManager() {
     }
@@ -60,6 +62,14 @@ public class WindowManager {
         }
         this.jacobExcusesFrame = jacobExcusesFrame;
     } 
+    
+    public void register(ConsoleFrame consoleFrame) {
+        if ( this.getConsoleFrame() != null ) {
+            throw new IllegalArgumentException("ConsoelFrame already " + 
+                    "registered");
+        }
+        this.consoleFrame = consoleFrame;
+    }
 
     /**
      * @return the dashboardFrame
@@ -87,5 +97,9 @@ public class WindowManager {
      */
     public JacobExcusesFrame getJacobExcusesFrame() {
         return jacobExcusesFrame;
+    }
+    
+    public ConsoleFrame getConsoleFrame() {
+        return consoleFrame;
     }
 }
