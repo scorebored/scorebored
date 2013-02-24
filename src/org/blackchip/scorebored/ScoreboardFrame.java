@@ -259,6 +259,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
         }
         //System.out.println("Width: " + width + ", actual: " + actualWidth + " font: " + font.getSize());
 
+        font = font.deriveFont((float)font.getSize() - 1);
         textField.setFont(font);
         textField.setText(name);
     }
@@ -638,7 +639,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                                     .add(layout.createSequentialGroup()
                                         .add(leftWinsText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                        .add(leftTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(leftServerText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 73, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                     .add(leftScoreText))
@@ -648,7 +649,7 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                                     .add(layout.createSequentialGroup()
                                         .add(rightServerText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(rightTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                        .add(rightTeamNameText, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(rightWinsText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 44, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                         .add(4, 4, 4)))

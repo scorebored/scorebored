@@ -10,7 +10,7 @@ public class Commentary {
     private List<Speech> sentences = new ArrayList<Speech>();
     
     public Commentary() {
-        next("");
+        sentences.add(new Speech(""));
     }
     
     public Commentary add(String sentence) {
@@ -21,13 +21,20 @@ public class Commentary {
         return add(new Speech(displayAs, speakAs));
     }
     
-    public Commentary add(Speech sentence) {
+    public Speech getLast() {
         int last = sentences.size() - 1;
-        Speech old = sentences.get(last);
+        if ( last >= 0 ) {
+            return sentences.get(last);
+        }
+        return new Speech("");
+    }
+    
+    public Commentary add(Speech sentence) {
+        Speech old = getLast();
         Speech speech = new Speech(
                 old.getDisplayAs() + sentence.getDisplayAs(),
                 old.getSpeakAs() + sentence.getSpeakAs());
-        sentences.set(last, speech);
+        sentences.set(sentences.size() - 1, speech);
         return this;
     }
     
@@ -40,7 +47,12 @@ public class Commentary {
     }
     
     public Commentary next(Speech sentence) {
-        sentences.add(sentence);
+        Speech old = getLast();
+        if ( old.getSpeakAs().trim().length() == 0 ) {
+            add(sentence);
+        } else {
+            sentences.add(sentence);
+        }
         return this;
     }
     

@@ -280,7 +280,7 @@ public class Match {
     }
 
     public Commentary checkForGamePoint(Commentary commentary) {    
-        if(leftTeam.getScore() >= 20 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
+        if(leftTeam.getScore() >= this.getGameLength().getPoints() - 1 && leftTeam.getScore() - rightTeam.getScore() >= 1) {
             if(isOvertime()) {
                 commentary.next("Advantage ").add(leftTeam.getName());
             }
@@ -291,7 +291,7 @@ public class Match {
                 commentary.next("Game point");
             }
         }
-        if(rightTeam.getScore() >= 20 && rightTeam.getScore() - leftTeam.getScore() >= 1) {
+        if(rightTeam.getScore() >= this.getGameLength().getPoints() - 1 && rightTeam.getScore() - leftTeam.getScore() >= 1) {
             if(isOvertime()) {
                 commentary.next("Advantage ").add(rightTeam.getName());
             }

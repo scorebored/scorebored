@@ -55,7 +55,7 @@
                                   <Group type="102" attributes="0">
                                       <Component id="leftWinsText" linkSize="4" min="-2" pref="43" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="leftTeamNameText" pref="157" max="32767" attributes="0"/>
+                                      <Component id="leftTeamNameText" pref="190" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="leftServerText" linkSize="4" min="-2" pref="73" max="-2" attributes="0"/>
                                   </Group>
@@ -67,7 +67,7 @@
                                   <Group type="102" attributes="0">
                                       <Component id="rightServerText" linkSize="4" min="-2" pref="75" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="rightTeamNameText" pref="157" max="32767" attributes="0"/>
+                                      <Component id="rightTeamNameText" pref="190" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
                                       <Component id="rightWinsText" linkSize="4" min="-2" pref="44" max="-2" attributes="0"/>
                                   </Group>
