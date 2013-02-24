@@ -12,7 +12,7 @@
     <description>Builds, tests, and runs the project pong-scorebored.</description>
     <import file="nbproject/build-impl.xml"/>
     
-    <property name="version" value="1.2.0"/>
+    <property name="version" value="1.2.1"/>
     
     <property name="ivy.install.version" value="2.3.0"/>
     <property name="ivy.jar.dir" value="${basedir}/lib"/>
