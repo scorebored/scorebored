@@ -170,3 +170,15 @@ body {
     border-collapse: collapse;
     padding: 5px 10px;
 }
+
+.tourney {
+    text-align: center;
+    font-size: 12pt;
+}
+
+.winner {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
