@@ -307,16 +307,32 @@ public class ScoreboardFrame extends javax.swing.JFrame {
                 if ( ke.isShiftDown() ) {
                     switch ( ke.getKeyCode() ) {
                         case KeyEvent.VK_RIGHT:
-                            retreatTeam(Team.Side.RIGHT);
+                            if ( !match.isReverse() ) {
+                                retreatTeam(Team.Side.RIGHT);
+                            } else {
+                                retreatTeam(Team.Side.LEFT);
+                            }
                             return true;
                         case KeyEvent.VK_LEFT:
-                            retreatTeam(Team.Side.LEFT);
+                            if ( !match.isReverse() ) {
+                                retreatTeam(Team.Side.LEFT);
+                            } else { 
+                                retreatTeam(Team.Side.RIGHT);
+                            }
                             return true;
                         case KeyEvent.VK_1:
-                            retreatVictory(Team.Side.LEFT);
+                            if ( !match.isReverse() ) {
+                                retreatVictory(Team.Side.LEFT);
+                            } else {
+                                retreatVictory(Team.Side.RIGHT);
+                            }
                             return true;
                         case KeyEvent.VK_2:
-                            retreatVictory(Team.Side.RIGHT);
+                            if ( !match.isReverse() ) {
+                                retreatVictory(Team.Side.RIGHT);
+                            } else {
+                                retreatVictory(Team.Side.LEFT);
+                            }
                             return true;
                     }
                 }
@@ -331,16 +347,32 @@ public class ScoreboardFrame extends javax.swing.JFrame {
 
                 switch ( ke.getKeyCode() ) { 
                     case KeyEvent.VK_RIGHT:
-                        advanceTeam(Team.Side.RIGHT);
+                        if ( !match.isReverse() ) {
+                            advanceTeam(Team.Side.RIGHT);
+                        } else {
+                            advanceTeam(Team.Side.LEFT);
+                        }
                         return true;
                     case KeyEvent.VK_LEFT:
-                        advanceTeam(Team.Side.LEFT);
+                        if ( !match.isReverse() ) {
+                            advanceTeam(Team.Side.LEFT);
+                        } else {
+                            advanceTeam(Team.Side.RIGHT);
+                        }
                         return true;
                     case KeyEvent.VK_1:
-                        advanceVictory(Team.Side.LEFT);
+                        if ( !match.isReverse() ) {
+                            advanceVictory(Team.Side.LEFT);
+                        } else {
+                            advanceVictory(Team.Side.RIGHT);
+                        }
                         return true;
                     case KeyEvent.VK_2:
-                        advanceVictory(Team.Side.RIGHT);
+                        if ( !match.isReverse() ) {
+                            advanceVictory(Team.Side.RIGHT);
+                        } else {
+                            advanceVictory(Team.Side.LEFT);
+                        }
                         return true;
                     case KeyEvent.VK_A:
                         showAdjustmentDialog();

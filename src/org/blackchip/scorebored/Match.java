@@ -25,6 +25,7 @@ public class Match {
     private List<MatchListener> listeners = new LinkedList<MatchListener>();
     private boolean subtitles = false;
     private boolean fullScreen = true;
+    private boolean reverse = false;
     
     private List<PointHistory> histories = new ArrayList<PointHistory>();
     
@@ -430,6 +431,14 @@ public class Match {
     
     public void setFullScreen(boolean fullScreen) {
         this.fullScreen = fullScreen;
+    }
+    
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
+    }
+    
+    public boolean isReverse() {
+        return this.reverse;
     }
     
 }
