@@ -4,3 +4,4 @@ nbproject/private
 lib
 *.class
 .DS_Store
+/target/

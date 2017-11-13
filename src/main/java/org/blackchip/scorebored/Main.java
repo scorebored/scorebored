@@ -1,6 +1,6 @@
 package org.blackchip.scorebored;
 
-import com.apple.eawt.Application;
+//import com.apple.eawt.Application;
 import org.blackchip.scorebored.talker.MacTalker;
 import org.blackchip.scorebored.talker.MuteTalker;
 import org.blackchip.scorebored.talker.LinuxTalker;
@@ -160,7 +160,7 @@ public class Main {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Pong Scorebored");
             
-            Application.getApplication().setDockIconImage(Scorebored.getIconImage());
+            //Application.getApplication().setDockIconImage(Scorebored.getIconImage());
                     
             if ( System.getProperty("os.name").contains("Linux") ) {
                 UIManager.setLookAndFeel(UIManager
